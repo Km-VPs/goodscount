@@ -1,0 +1,6 @@
+/* Optional Lao fonts — add the files yourself into fonts/extra/ (see README.txt there).
+   If a file is missing the app simply hides/disables that choice and uses the embedded fonts. */
+@font-face{font-family:'Saysettha OT';font-style:normal;font-weight:400;font-display:swap;
+  src:local('Saysettha OT'),local('SaysetthaOT'),url('fonts/extra/SaysetthaOT.woff2') format('woff2'),url('fonts/extra/SaysetthaOT.ttf') format('truetype')}
+@font-face{font-family:'Hin Siew';font-style:normal;font-weight:400;font-display:swap;
+  src:local('Hin Siew'),local('HinSiew'),url('fonts/extra/HinSiew.woff2') format('woff2'),url('fonts/extra/HinSiew.ttf') format('truetype')}
