@@ -76,7 +76,7 @@ svg{display:block}
 .brand h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.2px;white-space:nowrap;line-height:1.25}
 .brand button{display:block;max-width:100%;font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
 .icon-btn{
-  width:48px;height:48px;border-radius:16px;display:grid;place-items:center;
+  flex:none;width:44px;height:44px;border-radius:15px;display:grid;place-items:center;
   background:rgba(255,255,255,.1);border:1px solid var(--stroke);
 }
 .icon-btn:active{transform:scale(.94);background:rgba(255,255,255,.2)}
@@ -301,6 +301,46 @@ main{padding:12px 12px calc(var(--dock-h) + 28px)}
 .about .fam,.about .ver{margin:2px 0;font-size:14px;color:var(--mute)}
 .about ul{list-style:none;margin:8px 0 0;padding:0;text-align:left;font-size:14px;color:var(--mute);line-height:1.9}
 .about h3{margin:18px 0 0;font-size:14px;color:var(--mute);text-align:left;font-weight:500}
+.top{gap:8px}
+.icon-btn svg{width:24px;height:24px}
+@media (max-width:370px){ .mark{display:none} }
+.tag.pk{background:rgba(94,231,255,.16);color:var(--cy)}
+.tag.cur{background:rgba(94,231,255,.22);color:var(--cy)}
+.now .num .u{font-size:15px}
+.sheet input[type=search]{
+  display:block;width:100%;margin:0 0 12px;font:inherit;font-size:18px;color:var(--ink);-webkit-appearance:none;appearance:none;
+  padding:12px 16px;border-radius:16px;border:1px solid var(--stroke);background:rgba(255,255,255,.08);
+  -webkit-user-select:text;user-select:text;
+}
+.unitchips{display:flex;gap:8px;overflow-x:auto;margin:-4px 0 14px;padding-bottom:2px;scrollbar-width:none}
+.unitchips::-webkit-scrollbar{display:none}
+.uchip{flex:none;height:40px;padding:0 14px;border-radius:12px;font-size:15px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:var(--mute)}
+.uchip.on{background:rgba(94,231,255,.2);border-color:rgba(94,231,255,.7);color:var(--ink)}
+.trow small{display:block;font-size:13px;color:var(--mute);margin-top:1px}
+.lbl{font-size:14px;color:var(--mute);margin:12px 2px 6px}
+.sheet .seg.tight{margin-bottom:4px}
+.range{display:flex;align-items:center;gap:12px;padding:4px 4px 0}
+.range input{flex:1;height:36px;accent-color:var(--cy)}
+.range b{min-width:52px;text-align:right;font-variant-numeric:tabular-nums}
+.hint{font-size:13px;color:var(--mute);margin:6px 2px 0;line-height:1.6}
+.hint.warn{color:var(--short)}
+.tests{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tests button{height:46px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid var(--stroke);font-size:15px;font-weight:600}
+.tests button:active{transform:scale(.95);background:rgba(94,231,255,.25)}
+.hday{font-size:13px;color:var(--mute);margin:14px 4px 6px}
+.hcard{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
+.hcard.cur{border-color:rgba(94,231,255,.7)}
+.hcard:active{background:rgba(255,255,255,.14)}
+.hcard .h1{display:flex;justify-content:space-between;gap:10px;font-size:17px;font-weight:600}
+.hcard .h1 span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hcard .h1 span:last-child{flex:none;font-size:14px;font-weight:500;color:var(--mute)}
+.hcard .h2{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:4px;font-size:14px;color:var(--mute)}
+.hempty{text-align:center;color:var(--mute);padding:26px 10px}
+.imgprev{display:grid;gap:10px;max-height:48dvh;overflow:auto;margin:4px 0 8px;padding:8px;border-radius:16px;background:rgba(255,255,255,.06)}
+.imgprev img{display:block;width:100%;border-radius:8px;background:#fff}
+.imgprev .mk{padding:40px 10px;text-align:center;color:var(--mute)}
+.sh-actions.one{grid-template-columns:1fr}
+.sh-actions.even{grid-template-columns:1fr 1fr}
 
 @media (max-height:640px){
   .big{height:92px;font-size:56px}
@@ -319,6 +359,7 @@ main{padding:12px 12px calc(var(--dock-h) + 28px)}
     <h1>GoodsCount</h1>
     <button id="billLine" type="button"></button>
   </div>
+  <button class="icon-btn" id="btnHist" type="button"></button>
   <button class="icon-btn" id="btnSum" type="button"></button>
   <button class="icon-btn" id="btnMenu" type="button"></button>
 </header>
@@ -348,11 +389,7 @@ main{padding:12px 12px calc(var(--dock-h) + 28px)}
     <div class="num" id="nowCnt"></div>
   </button>
   <div class="tools">
-    <div class="seg" id="steps" role="group">
-      <button type="button" data-s="1">×1</button>
-      <button type="button" data-s="5">×5</button>
-      <button type="button" data-s="10">×10</button>
-    </div>
+    <div class="seg" id="steps" role="group"></div>
     <button class="undo" id="undo" type="button" disabled></button>
   </div>
   <div class="pads">
@@ -367,13 +404,13 @@ main{padding:12px 12px calc(var(--dock-h) + 28px)}
 (function(){
 'use strict';
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.3.0';
 const LOGO_BIG = `<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoodsCount"><defs><linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8CF6FF"/><stop offset="1" stop-color="#2EE6A6"/></linearGradient></defs><g stroke-linejoin="round" stroke-linecap="round"><polygon points="99.7,175.2 247.8,260.8 247.8,431.8 99.7,346.2" fill="rgba(255,255,255,.06)" stroke="#E6EEFF" stroke-width="13"/><polygon points="256.0,75.5 404.1,161.0 256.0,246.5 107.9,161.0" fill="rgba(255,255,255,.16)" stroke="#E6EEFF" stroke-width="13"/><polygon points="264.2,260.8 412.3,175.2 412.3,346.2 264.2,431.8" fill="url(#ga)" stroke="url(#ga)" stroke-width="13"/><polyline points="295.5,328.2 328.4,351.0 387.6,233.2" fill="none" stroke="#071026" stroke-width="22"/></g></svg>`;
 
 /* ================= translations ================= */
 const T = {
 en:{
-  billPrompt:'Tap to add bill no.', billWord:'Bill', sumAria:'Count summary', menuAria:'Settings',
+  billPrompt:'Tap to add bill details', billWord:'Bill', sumAria:'Count summary', menuAria:'Settings', histAria:'Bill history',
   items:'{n} items', ofBill:'/ {n} on Bill', counted:'counted',
   sub0:'Add your first item to start counting', subNoBill:'No Bill quantities entered yet',
   subAllOk:'Everything matches the Bill', subOver:'{n} over', subShort:'{n} not complete', and:' and ',
@@ -386,30 +423,54 @@ en:{
   minusAria:'Decrease count', plusAria:'Increase count',
   undone:'Undone', deleted:'Deleted “{name}”', addedN:'{n} items added', nothingSum:'No items to summarize',
   copied:'Summary copied', shareFallback:'Sharing isn’t supported here — copied instead', noShare:'Sharing isn’t supported here',
-  resetDone:'Counts reset', cleared:'Cleared',
+  resetDone:'Counts reset',
   addTitle:'Add item', tabOne:'One by one', tabBulk:'Paste many',
   itemName:'Item name', itemPh:'e.g. Drinking water 600ml', billQty:'Quantity on Bill', optional:'(optional)', qtyPh:'e.g. 24',
-  bulkLabel:'Paste items from the bill — one per line, then the quantity', bulkPh:'Drinking water 24\nRice 10\nSugar x5',
+  bulkLabel:'Paste items from the bill — one per line: name, quantity, unit', bulkPh:'Drinking water 24 pack\nRice 10 bag\nSugar x5',
   cancel:'Cancel', addGo:'Add & start counting',
   editTitle:'Edit item', fCounted:'Counted', fOnBill:'On Bill', notSet:'Not set', save:'Save',
+  unit:'Unit', unitPh:'e.g. case', pack:'Pack size', packPh:'e.g. 12',
+  packHint:'Pack size: e.g. the Bill says bottles but they come in cases of 12 → enter 12, then use the 📦 button to count a whole case per tap.',
   sumTitle:'Count summary', noBillNo:'No bill number', gShort:'Short', gOver:'Over', gOk:'Match', gNone:'No Bill quantity',
-  countedN:'Counted {n}', shortN:'Short {n}', overN:'Over +{n}', close:'Close', copy:'Copy', share:'Share',
+  close:'Close', copy:'Copy', share:'Share', image:'Image',
   setTitle:'Settings', billLabel:'Bill number / delivery note', billPh:'e.g. INV-2026-0142',
   language:'Language', laoFont:'Lao font', fontMissing:'font file not added yet',
-  sound:'Sound on tap', vibrate:'Vibrate on tap',
-  resetAll:'Reset all counts to 0', clearAll:'Clear all items — new bill', about:'About GoodsCount', done:'Done',
+  billInfo:'Bill details', party:'Customer / shop / driver', partyPh:'e.g. Somchai Shop', plate:'Vehicle plate', platePh:'e.g. AB 1234',
+  dirLabel:'Type', dirNone:'Not set', dirIn:'Unload', dirOut:'Load', note:'Note', created:'Created', updated:'Last edit',
+  newBill:'Start a new bill', newBillSub:'The current bill stays in History',
+  savedToHist:'Previous bill saved in History', reopen:'Reopen',
+  hist:'Bill history', histSearch:'Search bill no., name, plate, item', hAll:'Bills', hTrash:'Trash',
+  histEmpty:'No bills here yet', today:'Today', yesterday:'Yesterday', curTag:'Open now', noBillShort:'(no bill no.)',
+  openEditBill:'Open & edit', backToCount:'Back to counting', toTrash:'Move to trash', restore:'Restore', delForever:'Delete forever',
+  delForeverMsg:'This bill will be gone for good. It cannot be recovered.', trashMsg:'Moved to trash', restored:'Restored', opened:'Opened {b}', back:'Back',
+  trashNote:'Bills in the trash are kept until you delete them forever.',
+  backup:'Back up to file', importB:'Restore from file', lastBackup:'Last backup: {d}',
+  neverBackup:'Not backed up yet. Save a backup file now and then, in case the phone is reset or the app is removed.',
+  backupDone:'Backup saved ({n} bills)', importDone:'Restored {n} bills', importBad:'This is not a GoodsCount backup file', billsN:'{n} bills',
+  imgTitle:'Save as image', cols1:'1 col (long)', cols2:'2 cols', cols3:'3 cols', sortProb:'Problems first', sortOrig:'List order',
+  making:'Creating image…', saveImg:'Save', shareImg:'Share', imgInfo:'{w} × {h} px · {p} image(s)', imgSaved:'Image saved', imgFail:'Could not create the image',
+  colItem:'Item', colCount:'Counted', colBill:'Bill', colResult:'Result', page:'Page {a}/{b}', totals:'Counted {c} / Bill {b}', madeWith:'Made with GoodsCount',
+  soundSec:'Sound', sound:'Sound on tap', soundStyle:'Sound style', sBeep:'Beep', sClick:'Click', sPop:'Pop', sBell:'Bell',
+  volume:'Volume', volNote:'The phone’s own volume and silent mode apply too.',
+  vibSec:'Vibration', vibrate:'Vibrate on tap', vibLevel:'Strength', vLight:'Light', vNormal:'Normal', vStrong:'Strong', vMax:'Max',
+  mile:'Extra signal every … pieces', mOff:'Off', tryIt:'Try how each one feels',
+  xUp:'+1', xDown:'−1', xMile:'Every N', xHit:'Match', xOver:'Over', xErr:'Not allowed',
+  vibLegend:'+1 = 1 short · −1 = 2 short · Every N = 2 firm · Match Bill = 1 long · Over = 3 long · Not allowed = 3 rapid',
+  iosVib:'iPhone: light taps only (iOS 18 or newer); strength cannot be changed.', noVib:'This browser cannot vibrate.',
+  dataSec:'Data',
+  resetAll:'Reset all counts to 0', about:'About GoodsCount', done:'Done',
   help1:'Tap an item’s name to choose which item you are counting. The − / + buttons at the bottom act on that item.',
   help2:'Swipe an item to the right to delete it.',
-  help3:'Tap an item’s number to edit its name, counted quantity or Bill quantity.',
-  help4:'×5 and ×10 are for goods that come in bundles or packs.',
+  help3:'Tap an item’s number to edit its name, counts, unit or pack size.',
+  help4:'×5 and ×10 are for bundles. Give an item a pack size to get a 📦 button that counts a whole pack per tap.',
+  help5:'Every bill is saved automatically in History (clock icon). Back up to a file now and then.',
   resetTitle:'Reset counts', resetMsg:'Every item goes back to 0. Items and Bill quantities stay.', resetOk:'Reset',
-  clearTitle:'Clear everything', clearMsg:'All items will be removed so you can start a new bill.', clearOk:'Clear all',
   aboutTitle:'About', tagline:'Count goods. Check the bill.', family:'Part of the VECTOR family', version:'Version',
   fontsCredit:'Fonts embedded in this app (SIL Open Font License)',
   repBill:'Bill', repTime:'Time', repStats:'Match {ok} | Short {s} | Over {o} | No Bill {n}', repCountedN:'Counted {n}'
 },
 th:{
-  billPrompt:'แตะเพื่อใส่เลขที่บิล', billWord:'บิล', sumAria:'สรุปผลการนับ', menuAria:'ตั้งค่า',
+  billPrompt:'แตะเพื่อใส่ข้อมูลบิล', billWord:'บิล', sumAria:'สรุปผลการนับ', menuAria:'ตั้งค่า', histAria:'ประวัติบิล',
   items:'{n} รายการ', ofBill:'/ {n} ตาม Bill', counted:'ชิ้นที่นับแล้ว',
   sub0:'เพิ่มรายการแรกเพื่อเริ่มนับ', subNoBill:'ยังไม่ได้ใส่จำนวนตาม Bill',
   subAllOk:'ครบตาม Bill ทุกรายการ', subOver:'เกิน {n} รายการ', subShort:'ยังไม่ครบ {n} รายการ', and:' และ ',
@@ -422,30 +483,54 @@ th:{
   minusAria:'ลดจำนวน', plusAria:'เพิ่มจำนวน',
   undone:'เลิกทำแล้ว', deleted:'ลบ “{name}” แล้ว', addedN:'เพิ่ม {n} รายการแล้ว', nothingSum:'ยังไม่มีรายการให้สรุป',
   copied:'คัดลอกสรุปแล้ว', shareFallback:'เครื่องนี้ไม่รองรับการแชร์ คัดลอกให้แล้ว', noShare:'เครื่องนี้ไม่รองรับการแชร์',
-  resetDone:'รีเซ็ตแล้ว', cleared:'ล้างแล้ว',
+  resetDone:'รีเซ็ตแล้ว',
   addTitle:'เพิ่มรายการ', tabOne:'ทีละรายการ', tabBulk:'วางหลายรายการ',
   itemName:'ชื่อรายการ', itemPh:'เช่น น้ำดื่ม 600ml', billQty:'จำนวนตาม Bill', optional:'(ไม่ใส่ก็ได้)', qtyPh:'เช่น 24',
-  bulkLabel:'วางรายการจากบิล บรรทัดละ 1 รายการ ตามด้วยจำนวน', bulkPh:'น้ำดื่ม 24\nข้าวสาร 10\nน้ำตาล x5',
+  bulkLabel:'วางรายการจากบิล บรรทัดละ 1 รายการ: ชื่อ จำนวน หน่วย', bulkPh:'น้ำดื่ม 24 แพ็ค\nข้าวสาร 10 ถุง\nน้ำตาล x5',
   cancel:'ยกเลิก', addGo:'เพิ่มและเริ่มนับ',
   editTitle:'แก้ไขรายการ', fCounted:'นับได้', fOnBill:'ตาม Bill', notSet:'ไม่ระบุ', save:'บันทึก',
+  unit:'หน่วย', unitPh:'เช่น ลัง', pack:'ขนาดแพ็ค', packPh:'เช่น 12',
+  packHint:'ขนาดแพ็ค: เช่น Bill เป็นขวด แต่ของมาเป็นลัง ลังละ 12 → ใส่ 12 แล้วกดปุ่ม 📦 นับทีละลังได้เลย',
   sumTitle:'สรุปผลการนับ', noBillNo:'ยังไม่ได้ใส่เลขที่บิล', gShort:'ขาด', gOver:'เกิน', gOk:'ครบ', gNone:'ไม่มีจำนวน Bill',
-  countedN:'นับได้ {n}', shortN:'ขาด {n}', overN:'เกิน +{n}', close:'ปิด', copy:'คัดลอก', share:'แชร์',
+  close:'ปิด', copy:'คัดลอก', share:'แชร์', image:'รูปภาพ',
   setTitle:'ตั้งค่า', billLabel:'เลขที่บิล / ชื่อใบส่งของ', billPh:'เช่น INV-2026-0142',
   language:'ภาษา', laoFont:'ฟอนต์ภาษาลาว', fontMissing:'ยังไม่ได้เพิ่มไฟล์ฟอนต์',
-  sound:'เสียงตอนกด', vibrate:'สั่นตอนกด',
-  resetAll:'รีเซ็ตจำนวนที่นับทั้งหมดเป็น 0', clearAll:'ล้างทุกรายการ เริ่มบิลใหม่', about:'ข้อมูลแอป GoodsCount', done:'เรียบร้อย',
+  billInfo:'ข้อมูลบิล', party:'ลูกค้า / ร้าน / คนขับ', partyPh:'เช่น ร้านสมชาย', plate:'ทะเบียนรถ', platePh:'เช่น 1กข 1234',
+  dirLabel:'ประเภท', dirNone:'ไม่ระบุ', dirIn:'ลงของ', dirOut:'ขึ้นของ', note:'หมายเหตุ', created:'สร้างเมื่อ', updated:'แก้ไขล่าสุด',
+  newBill:'เริ่มบิลใหม่', newBillSub:'บิลเดิมเก็บไว้ในประวัติ ไม่หาย',
+  savedToHist:'บิลเดิมบันทึกไว้ในประวัติแล้ว', reopen:'เปิดกลับ',
+  hist:'ประวัติบิล', histSearch:'ค้นหา เลขบิล ชื่อ ทะเบียน สินค้า', hAll:'บิล', hTrash:'ถังขยะ',
+  histEmpty:'ยังไม่มีบิลในนี้', today:'วันนี้', yesterday:'เมื่อวาน', curTag:'กำลังเปิด', noBillShort:'(ไม่มีเลขบิล)',
+  openEditBill:'เปิดแก้ไข', backToCount:'กลับไปนับต่อ', toTrash:'ย้ายไปถังขยะ', restore:'กู้คืน', delForever:'ลบถาวร',
+  delForeverMsg:'บิลนี้จะหายไปถาวร กู้คืนไม่ได้อีก', trashMsg:'ย้ายไปถังขยะแล้ว', restored:'กู้คืนแล้ว', opened:'เปิด {b} แล้ว', back:'กลับ',
+  trashNote:'บิลในถังขยะจะเก็บไว้ตลอด จนกว่าจะกด “ลบถาวร” เอง',
+  backup:'สำรองข้อมูลเป็นไฟล์', importB:'นำเข้าจากไฟล์สำรอง', lastBackup:'สำรองล่าสุด: {d}',
+  neverBackup:'ยังไม่เคยสำรอง ควรสำรองเป็นไฟล์เก็บไว้บ้าง เผื่อเครื่องถูกล้างข้อมูลหรือลบแอป',
+  backupDone:'สำรองแล้ว ({n} บิล)', importDone:'นำเข้าแล้ว {n} บิล', importBad:'ไฟล์นี้ไม่ใช่ไฟล์สำรองของ GoodsCount', billsN:'{n} บิล',
+  imgTitle:'บันทึกเป็นรูปภาพ', cols1:'1 คอลัมน์ (ยาว)', cols2:'2 คอลัมน์', cols3:'3 คอลัมน์', sortProb:'ปัญหาขึ้นก่อน', sortOrig:'ตามลำดับรายการ',
+  making:'กำลังสร้างรูป…', saveImg:'บันทึกรูป', shareImg:'แชร์รูป', imgInfo:'{w} × {h} px · {p} รูป', imgSaved:'บันทึกรูปแล้ว', imgFail:'สร้างรูปไม่สำเร็จ',
+  colItem:'รายการ', colCount:'นับได้', colBill:'Bill', colResult:'ผล', page:'หน้า {a}/{b}', totals:'นับได้ {c} / Bill {b}', madeWith:'สร้างด้วย GoodsCount',
+  soundSec:'เสียง', sound:'เสียงตอนกด', soundStyle:'แบบเสียง', sBeep:'บี๊บ', sClick:'คลิก', sPop:'ป๊อป', sBell:'กระดิ่ง',
+  volume:'ความดัง', volNote:'ต้องเปิดเสียงเครื่องด้วย ถ้าเครื่องอยู่ในโหมดเงียบจะไม่มีเสียง',
+  vibSec:'การสั่น', vibrate:'สั่นตอนกด', vibLevel:'ระดับการสั่น', vLight:'เบา', vNormal:'ปกติ', vStrong:'แรง', vMax:'แรงสุด',
+  mile:'สัญญาณพิเศษทุกๆ … ชิ้น', mOff:'ปิด', tryIt:'ลองสัมผัสแต่ละแบบ',
+  xUp:'+1', xDown:'−1', xMile:'ครบรอบ', xHit:'ครบ', xOver:'เกิน', xErr:'กดไม่ได้',
+  vibLegend:'+1 = สั้น 1 ครั้ง · −1 = สั้น 2 ครั้ง · ครบรอบ = หนัก 2 ครั้ง · ครบ Bill = ยาว 1 ครั้ง · เกิน = ยาว 3 ครั้ง · กดไม่ได้ = รัว 3 ครั้ง',
+  iosVib:'iPhone: สั่นได้แค่แบบเบา (iOS 18 ขึ้นไป) ปรับความแรงไม่ได้', noVib:'เบราว์เซอร์นี้ไม่รองรับการสั่น',
+  dataSec:'ข้อมูล',
+  resetAll:'รีเซ็ตจำนวนที่นับทั้งหมดเป็น 0', about:'ข้อมูลแอป GoodsCount', done:'เรียบร้อย',
   help1:'แตะชื่อรายการ เพื่อเลือกว่ากำลังนับตัวไหน ปุ่ม − / + ด้านล่างจะทำงานกับรายการนั้น',
   help2:'ปัดรายการไปทางขวา เพื่อลบ',
-  help3:'แตะตัวเลขของรายการ เพื่อแก้ชื่อ จำนวนที่นับ หรือจำนวนตาม Bill',
-  help4:'×5 และ ×10 ใช้เมื่อของมาเป็นมัด เป็นแพ็ค',
+  help3:'แตะตัวเลขของรายการ เพื่อแก้ชื่อ จำนวน หน่วย หรือขนาดแพ็ค',
+  help4:'×5 และ ×10 ใช้เมื่อของมาเป็นมัด ถ้าตั้ง “ขนาดแพ็ค” ให้รายการ จะมีปุ่ม 📦 นับทีละแพ็ค',
+  help5:'ทุกบิลบันทึกอัตโนมัติในประวัติ (ไอคอนนาฬิกา) ควรสำรองเป็นไฟล์เป็นระยะ',
   resetTitle:'รีเซ็ตจำนวนที่นับ', resetMsg:'จำนวนที่นับของทุกรายการจะกลับเป็น 0 รายการและจำนวน Bill ยังอยู่', resetOk:'รีเซ็ต',
-  clearTitle:'ล้างทุกรายการ', clearMsg:'รายการทั้งหมดจะถูกลบออก เริ่มนับบิลใหม่ได้เลย', clearOk:'ล้างทั้งหมด',
   aboutTitle:'ข้อมูลแอป', tagline:'นับของ ตรวจกับบิล', family:'เครื่องมือในเครือ VECTOR', version:'เวอร์ชัน',
   fontsCredit:'ฟอนต์ที่ฝังมากับแอป (ใบอนุญาต SIL Open Font License)',
   repBill:'บิล', repTime:'เวลา', repStats:'ครบ {ok} | ขาด {s} | เกิน {o} | ไม่มี Bill {n}', repCountedN:'นับได้ {n}'
 },
 lo:{
-  billPrompt:'ແຕະເພື່ອໃສ່ເລກທີ່ບິນ', billWord:'ບິນ', sumAria:'ສະຫຼຸບຜົນການນັບ', menuAria:'ຕັ້ງຄ່າ',
+  billPrompt:'ແຕະເພື່ອໃສ່ຂໍ້ມູນບິນ', billWord:'ບິນ', sumAria:'ສະຫຼຸບຜົນການນັບ', menuAria:'ຕັ້ງຄ່າ', histAria:'ປະຫວັດບິນ',
   items:'{n} ລາຍການ', ofBill:'/ {n} ຕາມບິນ', counted:'ຈຳນວນທີ່ນັບແລ້ວ',
   sub0:'ເພີ່ມລາຍການທຳອິດເພື່ອເລີ່ມນັບ', subNoBill:'ຍັງບໍ່ໄດ້ໃສ່ຈຳນວນຕາມບິນ',
   subAllOk:'ຄົບຕາມບິນທຸກລາຍການ', subOver:'ເກີນ {n} ລາຍການ', subShort:'ຍັງບໍ່ຄົບ {n} ລາຍການ', and:' ແລະ ',
@@ -458,30 +543,61 @@ lo:{
   minusAria:'ຫຼຸດຈຳນວນ', plusAria:'ເພີ່ມຈຳນວນ',
   undone:'ຍ້ອນກັບແລ້ວ', deleted:'ລຶບ “{name}” ແລ້ວ', addedN:'ເພີ່ມ {n} ລາຍການແລ້ວ', nothingSum:'ຍັງບໍ່ມີລາຍການໃຫ້ສະຫຼຸບ',
   copied:'ສຳເນົາບົດສະຫຼຸບແລ້ວ', shareFallback:'ເຄື່ອງນີ້ບໍ່ຮອງຮັບການແບ່ງປັນ ສຳເນົາໃຫ້ແລ້ວ', noShare:'ເຄື່ອງນີ້ບໍ່ຮອງຮັບການແບ່ງປັນ',
-  resetDone:'ຣີເຊັດແລ້ວ', cleared:'ລ້າງແລ້ວ',
+  resetDone:'ຣີເຊັດແລ້ວ',
   addTitle:'ເພີ່ມລາຍການ', tabOne:'ເທື່ອລະລາຍການ', tabBulk:'ວາງຫຼາຍລາຍການ',
   itemName:'ຊື່ລາຍການ', itemPh:'ຕົວຢ່າງ ນ້ຳດື່ມ 600ml', billQty:'ຈຳນວນຕາມບິນ', optional:'(ບໍ່ໃສ່ກໍໄດ້)', qtyPh:'ຕົວຢ່າງ 24',
-  bulkLabel:'ວາງລາຍການຈາກບິນ ແຖວລະ 1 ລາຍການ ຕາມດ້ວຍຈຳນວນ', bulkPh:'ນ້ຳດື່ມ 24\nເຂົ້າສານ 10\nນ້ຳຕານ x5',
+  bulkLabel:'ວາງລາຍການຈາກບິນ ແຖວລະ 1 ລາຍການ: ຊື່ ຈຳນວນ ຫົວໜ່ວຍ', bulkPh:'ນ້ຳດື່ມ 24 ແພັກ\nເຂົ້າສານ 10 ຖົງ\nນ້ຳຕານ x5',
   cancel:'ຍົກເລີກ', addGo:'ເພີ່ມ ແລະ ເລີ່ມນັບ',
   editTitle:'ແກ້ໄຂລາຍການ', fCounted:'ນັບໄດ້', fOnBill:'ຕາມບິນ', notSet:'ບໍ່ລະບຸ', save:'ບັນທຶກ',
+  unit:'ຫົວໜ່ວຍ', unitPh:'ຕົວຢ່າງ ລັງ', pack:'ຂະໜາດແພັກ', packPh:'ຕົວຢ່າງ 12',
+  packHint:'ຂະໜາດແພັກ: ເຊັ່ນ ບິນເປັນແກ້ວ ແຕ່ເຄື່ອງມາເປັນລັງ ລັງລະ 12 → ໃສ່ 12 ແລ້ວກົດປຸ່ມ 📦 ນັບເທື່ອລະລັງ',
   sumTitle:'ສະຫຼຸບຜົນການນັບ', noBillNo:'ຍັງບໍ່ໄດ້ໃສ່ເລກທີ່ບິນ', gShort:'ຂາດ', gOver:'ເກີນ', gOk:'ຄົບ', gNone:'ບໍ່ມີຈຳນວນຕາມບິນ',
-  countedN:'ນັບໄດ້ {n}', shortN:'ຂາດ {n}', overN:'ເກີນ +{n}', close:'ປິດ', copy:'ສຳເນົາ', share:'ແບ່ງປັນ',
+  close:'ປິດ', copy:'ສຳເນົາ', share:'ແບ່ງປັນ', image:'ຮູບພາບ',
   setTitle:'ຕັ້ງຄ່າ', billLabel:'ເລກທີ່ບິນ / ໃບສົ່ງເຄື່ອງ', billPh:'ຕົວຢ່າງ INV-2026-0142',
   language:'ພາສາ', laoFont:'ຟອນລາວ', fontMissing:'ຍັງບໍ່ໄດ້ເພີ່ມໄຟລ໌ຟອນ',
-  sound:'ສຽງເວລາກົດ', vibrate:'ສັ່ນເວລາກົດ',
-  resetAll:'ຣີເຊັດຈຳນວນທີ່ນັບທັງໝົດເປັນ 0', clearAll:'ລ້າງທຸກລາຍການ ເລີ່ມບິນໃໝ່', about:'ກ່ຽວກັບ GoodsCount', done:'ສຳເລັດ',
+  billInfo:'ຂໍ້ມູນບິນ', party:'ລູກຄ້າ / ຮ້ານ / ຄົນຂັບ', partyPh:'ຕົວຢ່າງ ຮ້ານສົມໃຈ', plate:'ທະບຽນລົດ', platePh:'ຕົວຢ່າງ ກຂ 1234',
+  dirLabel:'ປະເພດ', dirNone:'ບໍ່ລະບຸ', dirIn:'ລົງເຄື່ອງ', dirOut:'ຂຶ້ນເຄື່ອງ', note:'ໝາຍເຫດ', created:'ສ້າງເມື່ອ', updated:'ແກ້ໄຂຫຼ້າສຸດ',
+  newBill:'ເລີ່ມບິນໃໝ່', newBillSub:'ບິນເກົ່າເກັບໄວ້ໃນປະຫວັດ ບໍ່ຫາຍ',
+  savedToHist:'ບິນເກົ່າບັນທຶກໄວ້ໃນປະຫວັດແລ້ວ', reopen:'ເປີດຄືນ',
+  hist:'ປະຫວັດບິນ', histSearch:'ຄົ້ນຫາ ເລກບິນ ຊື່ ທະບຽນ ສິນຄ້າ', hAll:'ບິນ', hTrash:'ຖັງຂີ້ເຫຍື້ອ',
+  histEmpty:'ຍັງບໍ່ມີບິນໃນນີ້', today:'ມື້ນີ້', yesterday:'ມື້ວານ', curTag:'ກຳລັງເປີດ', noBillShort:'(ບໍ່ມີເລກບິນ)',
+  openEditBill:'ເປີດແກ້ໄຂ', backToCount:'ກັບໄປນັບຕໍ່', toTrash:'ຍ້າຍໄປຖັງຂີ້ເຫຍື້ອ', restore:'ກູ້ຄືນ', delForever:'ລຶບຖາວອນ',
+  delForeverMsg:'ບິນນີ້ຈະຫາຍໄປຖາວອນ ກູ້ຄືນບໍ່ໄດ້ອີກ', trashMsg:'ຍ້າຍໄປຖັງຂີ້ເຫຍື້ອແລ້ວ', restored:'ກູ້ຄືນແລ້ວ', opened:'ເປີດ {b} ແລ້ວ', back:'ກັບ',
+  trashNote:'ບິນໃນຖັງຂີ້ເຫຍື້ອຈະເກັບໄວ້ຕະຫຼອດ ຈົນກວ່າຈະກົດ “ລຶບຖາວອນ” ເອງ',
+  backup:'ສຳຮອງຂໍ້ມູນເປັນໄຟລ໌', importB:'ນຳເຂົ້າຈາກໄຟລ໌ສຳຮອງ', lastBackup:'ສຳຮອງຫຼ້າສຸດ: {d}',
+  neverBackup:'ຍັງບໍ່ເຄີຍສຳຮອງ ຄວນສຳຮອງເປັນໄຟລ໌ໄວ້ແດ່ ເຜື່ອເຄື່ອງຖືກລ້າງຂໍ້ມູນ ຫຼື ລຶບແອັບ',
+  backupDone:'ສຳຮອງແລ້ວ ({n} ບິນ)', importDone:'ນຳເຂົ້າແລ້ວ {n} ບິນ', importBad:'ໄຟລ໌ນີ້ບໍ່ແມ່ນໄຟລ໌ສຳຮອງຂອງ GoodsCount', billsN:'{n} ບິນ',
+  imgTitle:'ບັນທຶກເປັນຮູບພາບ', cols1:'1 ຖັນ (ຍາວ)', cols2:'2 ຖັນ', cols3:'3 ຖັນ', sortProb:'ບັນຫາຂຶ້ນກ່ອນ', sortOrig:'ຕາມລຳດັບລາຍການ',
+  making:'ກຳລັງສ້າງຮູບ…', saveImg:'ບັນທຶກຮູບ', shareImg:'ແບ່ງປັນຮູບ', imgInfo:'{w} × {h} px · {p} ຮູບ', imgSaved:'ບັນທຶກຮູບແລ້ວ', imgFail:'ສ້າງຮູບບໍ່ສຳເລັດ',
+  colItem:'ລາຍການ', colCount:'ນັບໄດ້', colBill:'ບິນ', colResult:'ຜົນ', page:'ໜ້າ {a}/{b}', totals:'ນັບໄດ້ {c} / ບິນ {b}', madeWith:'ສ້າງດ້ວຍ GoodsCount',
+  soundSec:'ສຽງ', sound:'ສຽງເວລາກົດ', soundStyle:'ແບບສຽງ', sBeep:'ບີບ', sClick:'ຄລິກ', sPop:'ປັອບ', sBell:'ກະດິ່ງ',
+  volume:'ຄວາມດັງ', volNote:'ຕ້ອງເປີດສຽງເຄື່ອງນຳ ຖ້າເຄື່ອງຢູ່ໃນໂໝດງຽບຈະບໍ່ມີສຽງ',
+  vibSec:'ການສັ່ນ', vibrate:'ສັ່ນເວລາກົດ', vibLevel:'ລະດັບການສັ່ນ', vLight:'ເບົາ', vNormal:'ປົກກະຕິ', vStrong:'ແຮງ', vMax:'ແຮງສຸດ',
+  mile:'ສັນຍານພິເສດທຸກໆ … ອັນ', mOff:'ປິດ', tryIt:'ລອງສຳຜັດແຕ່ລະແບບ',
+  xUp:'+1', xDown:'−1', xMile:'ຄົບຮອບ', xHit:'ຄົບ', xOver:'ເກີນ', xErr:'ກົດບໍ່ໄດ້',
+  vibLegend:'+1 = ສັ້ນ 1 ເທື່ອ · −1 = ສັ້ນ 2 ເທື່ອ · ຄົບຮອບ = ໜັກ 2 ເທື່ອ · ຄົບບິນ = ຍາວ 1 ເທື່ອ · ເກີນ = ຍາວ 3 ເທື່ອ · ກົດບໍ່ໄດ້ = ຖີ່ 3 ເທື່ອ',
+  iosVib:'iPhone: ສັ່ນໄດ້ແຕ່ແບບເບົາ (iOS 18 ຂຶ້ນໄປ) ປັບຄວາມແຮງບໍ່ໄດ້', noVib:'ບຣາວເຊີນີ້ບໍ່ຮອງຮັບການສັ່ນ',
+  dataSec:'ຂໍ້ມູນ',
+  resetAll:'ຣີເຊັດຈຳນວນທີ່ນັບທັງໝົດເປັນ 0', about:'ກ່ຽວກັບ GoodsCount', done:'ສຳເລັດ',
   help1:'ແຕະຊື່ລາຍການ ເພື່ອເລືອກວ່າກຳລັງນັບອັນໃດ ປຸ່ມ − / + ດ້ານລຸ່ມຈະເຮັດວຽກກັບລາຍການນັ້ນ',
   help2:'ປັດລາຍການໄປທາງຂວາ ເພື່ອລຶບ',
-  help3:'ແຕະໂຕເລກຂອງລາຍການ ເພື່ອແກ້ຊື່ ຈຳນວນທີ່ນັບ ຫຼື ຈຳນວນຕາມບິນ',
-  help4:'×5 ແລະ ×10 ໃຊ້ເວລາເຄື່ອງມາເປັນມັດ ເປັນແພັກ',
+  help3:'ແຕະໂຕເລກຂອງລາຍການ ເພື່ອແກ້ຊື່ ຈຳນວນ ຫົວໜ່ວຍ ຫຼື ຂະໜາດແພັກ',
+  help4:'×5 ແລະ ×10 ໃຊ້ເວລາເຄື່ອງມາເປັນມັດ ຖ້າຕັ້ງ “ຂະໜາດແພັກ” ໃຫ້ລາຍການ ຈະມີປຸ່ມ 📦 ນັບເທື່ອລະແພັກ',
+  help5:'ທຸກບິນບັນທຶກອັດຕະໂນມັດໃນປະຫວັດ (ໄອຄອນໂມງ) ຄວນສຳຮອງເປັນໄຟລ໌ເປັນໄລຍະ',
   resetTitle:'ຣີເຊັດຈຳນວນທີ່ນັບ', resetMsg:'ຈຳນວນທີ່ນັບຂອງທຸກລາຍການຈະກັບເປັນ 0 ລາຍການ ແລະ ຈຳນວນຕາມບິນຍັງຢູ່', resetOk:'ຣີເຊັດ',
-  clearTitle:'ລ້າງທຸກລາຍການ', clearMsg:'ລາຍການທັງໝົດຈະຖືກລຶບອອກ ເລີ່ມນັບບິນໃໝ່ໄດ້ເລີຍ', clearOk:'ລ້າງທັງໝົດ',
   aboutTitle:'ກ່ຽວກັບແອັບ', tagline:'ນັບເຄື່ອງ ກວດກັບບິນ', family:'ເຄື່ອງມືໃນເຄືອ VECTOR', version:'ເວີຊັນ',
   fontsCredit:'ຟອນທີ່ຝັງມາກັບແອັບ (ໃບອະນຸຍາດ SIL Open Font License)',
   repBill:'ບິນ', repTime:'ເວລາ', repStats:'ຄົບ {ok} | ຂາດ {s} | ເກີນ {o} | ບໍ່ມີບິນ {n}', repCountedN:'ນັບໄດ້ {n}'
 }
 };
 const LANGS = [['en','English'],['th','ไทย'],['lo','ລາວ']];
+const UNITS = {
+  en:['pcs','pack','case','box','bag','bottle','sack','bundle'],
+  th:['ชิ้น','แพ็ค','ลัง','กล่อง','ถุง','ขวด','กระสอบ','มัด'],
+  lo:['ອັນ','ແພັກ','ລັງ','ກັບ','ຖົງ','ແກ້ວ','ກະສອບ','ມັດ']
+};
+const DIR_ICON = {in:'⬇ ', out:'⬆ '};
+const SND_STYLES = ['beep','click','pop','bell'];
 
 /* Lao font choices (all stacks keep embedded fallbacks) */
 const FONTS = {
@@ -504,10 +620,17 @@ const num = v => {
   const d = String(v).replace(/[๐-๙]/g, c => THAI.indexOf(c)).replace(/[^\d]/g,'');
   return d === '' ? null : parseInt(d, 10);
 };
+const p2 = n => String(n).padStart(2,'0');
+const fmtDate = ts => { const d = new Date(ts); return `${p2(d.getDate())}/${p2(d.getMonth()+1)}/${d.getFullYear()}`; };
+const fmtTime = ts => { const d = new Date(ts); return `${p2(d.getHours())}:${p2(d.getMinutes())}`; };
+const fmtDT = ts => fmtDate(ts) + ' ' + fmtTime(ts);
+const stamp = ts => { const d = new Date(ts || Date.now()); return `${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}-${p2(d.getHours())}${p2(d.getMinutes())}`; };
+const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const svg = p => `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 const ICON = {
   trash: svg('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>'),
   menu:  svg('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  hist:  svg('<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/>'),
   check: svg('<path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 6H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2"/><path d="M9 14l2 2 4-4"/>'),
   undo:  svg('<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>').replace('width="26" height="26"','width="22" height="22"'),
   plus:  svg('<path d="M12 5v14M5 12h14"/>').replace('width="26" height="26"','width="30" height="30"')
@@ -520,7 +643,12 @@ function detectLang(){
   const l = (navigator.language || '').toLowerCase();
   return l.startsWith('lo') ? 'lo' : l.startsWith('th') ? 'th' : 'en';
 }
-const defaults = () => ({ bill:'', items:[], activeId:null, step:1, filter:'all', sound:true, vibrate:true, lang:detectLang(), laoFont:'noto' });
+const defaults = () => ({
+  billId:uid(), bill:'', party:'', plate:'', dir:'', note:'', createdAt:Date.now(), updatedAt:Date.now(),
+  items:[], activeId:null, step:1, filter:'all',
+  sound:true, soundStyle:'beep', volume:70, vibrate:true, vibLevel:2, mile:10,
+  lang:detectLang(), laoFont:'noto', units:[], imgCols:1, imgSort:'prob', lastBackup:0
+});
 let S = load();
 function load(){
   for (const k of [KEY, OLD_KEY]) {
@@ -529,9 +657,14 @@ function load(){
       if (r && Array.isArray(r.items)) {
         const s = Object.assign(defaults(), r);
         if (!s.items.some(i => i.id === s.activeId)) s.activeId = null;
-        if (![1,5,10].includes(s.step)) s.step = 1;
+        if (![1,5,10,'p'].includes(s.step)) s.step = 1;
         if (!T[s.lang]) s.lang = detectLang();
         if (!FONTS[s.laoFont]) s.laoFont = 'noto';
+        if (!SND_STYLES.includes(s.soundStyle)) s.soundStyle = 'beep';
+        if (![1,2,3,4].includes(s.vibLevel)) s.vibLevel = 2;
+        if (![0,5,10,20].includes(s.mile)) s.mile = 10;
+        if (![1,2,3].includes(s.imgCols)) s.imgCols = 1;
+        if (!Array.isArray(s.units)) s.units = [];
         return s;
       }
     }catch(e){}
@@ -539,6 +672,8 @@ function load(){
   return defaults();
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+/* call after any change to the bill itself: saves now and copies it into History */
+function dirty(){ S.updatedAt = Date.now(); save(); schedulePersist(); }
 const find = id => S.items.find(i => i.id === id);
 const statusOf = it => it.target == null ? 'none' : it.count < it.target ? 'short' : it.count === it.target ? 'ok' : 'over';
 
@@ -547,6 +682,53 @@ function t(k, v){
   if (v) for (const x in v) s = s.split('{'+x+'}').join(v[x]);
   return s;
 }
+
+/* ================= history storage (IndexedDB, falls back to localStorage) ================= */
+const DB = (() => {
+  const LSH = 'vector-goodscount-history';
+  let dbp = null;
+  const open = () => dbp || (dbp = new Promise((res, rej) => {
+    if (!('indexedDB' in window)) { rej(new Error('no indexedDB')); return; }
+    const r = indexedDB.open('goodscount', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('bills', {keyPath:'id'});
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  }).catch(() => null));
+  const lsAll = () => { try{ return JSON.parse(localStorage.getItem(LSH)) || {}; }catch(e){ return {}; } };
+  const lsSet = m => { localStorage.setItem(LSH, JSON.stringify(m)); };
+  const run = (db, mode, fn) => new Promise((res, rej) => {
+    const tx = db.transaction('bills', mode), req = fn(tx.objectStore('bills'));
+    tx.oncomplete = () => res(req.result);
+    tx.onerror = tx.onabort = () => rej(tx.error);
+  });
+  return {
+    async put(b){ const db = await open(); if (!db) { const m = lsAll(); m[b.id] = b; lsSet(m); return; } await run(db, 'readwrite', s => s.put(b)); },
+    async get(id){ const db = await open(); if (!db) return lsAll()[id] || null; return (await run(db, 'readonly', s => s.get(id))) || null; },
+    async all(){ const db = await open(); if (!db) return Object.values(lsAll()); return (await run(db, 'readonly', s => s.getAll())) || []; },
+    async del(id){ const db = await open(); if (!db) { const m = lsAll(); delete m[id]; lsSet(m); return; } await run(db, 'readwrite', s => s.delete(id)); }
+  };
+})();
+
+const curBill = () => ({id:S.billId, bill:S.bill, party:S.party, plate:S.plate, dir:S.dir, note:S.note,
+  items:JSON.parse(JSON.stringify(S.items)), createdAt:S.createdAt, updatedAt:S.updatedAt});
+const isBlank = b => !b.items.length && !b.bill && !b.party && !b.plate && !b.note;
+
+/* every DB write goes through one queue, so they land in order */
+let dbChain = Promise.resolve(), persistT = null, askedPersist = false;
+const dbq = fn => (dbChain = dbChain.then(fn).catch(() => {}));
+function schedulePersist(){ clearTimeout(persistT); persistT = setTimeout(persistNow, 400); }
+function persistNow(){
+  clearTimeout(persistT); persistT = null;
+  const b = curBill();
+  if (!askedPersist && navigator.storage && navigator.storage.persist) {
+    askedPersist = true;
+    navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {});
+  }
+  return dbq(() => isBlank(b) ? DB.del(b.id) : DB.put(b));
+}
+const flush = () => { if (persistT) persistNow(); };
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
+window.addEventListener('pagehide', flush);
 
 /* language + font application */
 function fontStack(){
@@ -561,6 +743,7 @@ function applyLang(){
   document.documentElement.lang = S.lang;
   document.documentElement.style.setProperty('--f-ui', fontStack());
   document.title = 'GoodsCount';
+  $('#btnHist').setAttribute('aria-label', t('histAria'));
   $('#btnSum').setAttribute('aria-label', t('sumAria'));
   $('#btnMenu').setAttribute('aria-label', t('menuAria'));
   $('#steps').setAttribute('aria-label', t('steps'));
@@ -592,37 +775,65 @@ function undo(){
   const o = JSON.parse(s);
   S.items = o.items; S.activeId = o.activeId; openId = null;
   $('#undo').disabled = !undoStack.length;
-  save(); render(); toast(t('undone')); fb('down');
+  dirty(); render(); toast(t('undone')); fb('down');
 }
 
 /* ================= feedback (haptic + sound) ================= */
+const NOTES = {
+  up:[[880,0,.05]], down:[[440,0,.06]], mile:[[1175,0,.06],[1175,.11,.06]],
+  hit:[[988,0,.07],[1319,.09,.12]], over:[[196,0,.12],[196,.16,.12]], err:[[150,0,.1]]
+};
 let AC = null;
 function beep(kind){
   try{
+    const vol = Math.pow((S.volume ?? 70) / 100, 1.6) * .5;
+    if (vol <= 0.001) return;
     AC = AC || new (window.AudioContext || window.webkitAudioContext)();
     if (AC.state === 'suspended') AC.resume();
-    const tm = AC.currentTime;
-    const seq = {
-      up:[[880,0,.05]], down:[[440,0,.06]],
-      hit:[[988,0,.07],[1319,.09,.12]],
-      over:[[196,0,.12],[196,.16,.12]], err:[[150,0,.1]]
-    }[kind];
-    seq.forEach(([f,d,l]) => {
+    const tm = AC.currentTime + .005, st = S.soundStyle, harsh = kind === 'over' || kind === 'err';
+    const tone = (f, d, len, type, peak, sweep) => {
       const o = AC.createOscillator(), g = AC.createGain();
-      o.type = (kind==='over'||kind==='err') ? 'sawtooth' : 'sine';
-      o.frequency.value = f;
-      g.gain.setValueAtTime(.0001, tm+d);
-      g.gain.exponentialRampToValueAtTime(.16, tm+d+.01);
-      g.gain.exponentialRampToValueAtTime(.0001, tm+d+l);
+      o.type = type;
+      o.frequency.setValueAtTime(sweep ? f * 1.8 : f, tm + d);
+      if (sweep) o.frequency.exponentialRampToValueAtTime(f, tm + d + len * .6);
+      g.gain.setValueAtTime(.0001, tm + d);
+      g.gain.exponentialRampToValueAtTime(peak, tm + d + .006);
+      g.gain.exponentialRampToValueAtTime(.0001, tm + d + len);
       o.connect(g).connect(AC.destination);
-      o.start(tm+d); o.stop(tm+d+l+.02);
+      o.start(tm + d); o.stop(tm + d + len + .03);
+    };
+    NOTES[kind].forEach(([f, d, l]) => {
+      const peak = harsh ? vol * .7 : vol;
+      if (st === 'click')     tone(harsh ? f : f * 2, d, harsh ? l : .02, 'square', peak * .7);
+      else if (st === 'pop')  tone(f, d, Math.max(l, .08), harsh ? 'triangle' : 'sine', peak, true);
+      else if (st === 'bell') { tone(f, d, l * 4 + .1, harsh ? 'sawtooth' : 'triangle', peak); if (!harsh) tone(f * 2.76, d, l * 2 + .05, 'sine', peak * .25); }
+      else                    tone(f, d, l, harsh ? 'sawtooth' : 'sine', peak);
     });
   }catch(e){}
 }
+
+/* vibration patterns: [on, off, on, …] in ms. Each event feels different, so you can count without looking */
+const VIB = {up:[18], down:[12,60,12], mile:[45,70,45], hit:[260], over:[110,70,110,70,110], err:[30,40,30,40,30]};
+const VLV = [0, .55, 1, 1.6, 2.3];
+let iosSw = null;
+function iosTick(){   /* iOS Safari has no vibrate(); toggling a native switch gives a light tap (iOS 18+) */
+  try{
+    if (!iosSw) {
+      iosSw = document.createElement('label'); iosSw.setAttribute('aria-hidden','true'); iosSw.dataset.hap = '1'; iosSw.style.display = 'none';
+      const i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch',''); iosSw.appendChild(i);
+      document.body.appendChild(iosSw);
+    }
+    iosSw.click();
+  }catch(e){}
+}
+function vib(kind){
+  const p = VIB[kind]; if (!p) return;
+  const k = VLV[S.vibLevel] || 1;
+  if (navigator.vibrate) { navigator.vibrate(p.map((d, i) => Math.round(i % 2 ? d * Math.max(1, k * .8) : d * k))); return; }
+  if (isIOS) { let at = 0; p.forEach((d, i) => { if (i % 2 === 0) setTimeout(iosTick, at); at += d; }); }
+}
 function fb(kind){
-  if (S.vibrate && navigator.vibrate) {
-    navigator.vibrate({up:12, down:[10,30,10], hit:[30,50,30], over:[70,40,70,40,70], err:40}[kind]);
-  }
+  if (S.vibrate) vib(kind);
   if (S.sound) beep(kind);
 }
 
@@ -630,18 +841,20 @@ function fb(kind){
 function changeCount(id, delta){
   const it = find(id);
   if (!it) return;
-  const next = Math.max(0, it.count + delta);
-  if (next === it.count) { fb('err'); nudge(); return; }
+  const prev = it.count, next = Math.max(0, prev + delta);
+  if (next === prev) { fb('err'); nudge(); return; }
   const before = statusOf(it);
   snap();
   it.count = next;
   const after = statusOf(it);
   openId = null;
   let kind = delta > 0 ? 'up' : 'down', flash = null;
-  if (after === 'ok' && before !== 'ok')         { kind = 'hit';  flash = 'hit'; }
-  else if (after === 'over' && before !== 'over'){ kind = 'over'; flash = 'hitover'; }
+  if (after === 'ok' && before !== 'ok')          { kind = 'hit';  flash = 'hit'; }
+  else if (after === 'over' && before !== 'over') { kind = 'over'; flash = 'hitover'; }
+  else if (after === 'over' && delta > 0)         { kind = 'over'; }   // still adding past the Bill: keep warning
+  else if (delta > 0 && S.mile && Math.floor(next / S.mile) > Math.floor(prev / S.mile)) kind = 'mile';
   fb(kind);
-  save();
+  dirty();
   render({id, flash});
 }
 function setActive(id){
@@ -649,9 +862,14 @@ function setActive(id){
   S.activeId = id; save(); render();
   if (S.vibrate && navigator.vibrate) navigator.vibrate(8);
 }
+const packOf = it => it && it.pack > 1 ? it.pack : 0;
+function stepVal(){
+  if (S.step === 'p') return packOf(find(S.activeId)) || 1;
+  return S.step;
+}
 function press(dir){
   if (!find(S.activeId)) { fb('err'); nudge(); return; }
-  changeCount(S.activeId, dir * S.step);
+  changeCount(S.activeId, dir * stepVal());
 }
 function nudge(){
   const n = $('#now'); n.classList.remove('shake'); void n.offsetWidth; n.classList.add('shake');
@@ -661,7 +879,7 @@ function deleteItem(id){
   snap();
   S.items = S.items.filter(i => i.id !== id);
   if (S.activeId === id) S.activeId = null;
-  openId = null; save(); render();
+  openId = null; dirty(); render();
   toast(t('deleted', {name:it.name}), {label:t('undo'), fn:undo});
   fb('down');
 }
@@ -670,15 +888,24 @@ function deleteItem(id){
 let openId = null;
 const matchFilter = it => S.filter === 'all' || statusOf(it) === S.filter;
 
-function calc(){
+function calc(items){
   const r = {counted:0, target:0, hasT:false, short:0, ok:0, over:0, none:0, got:0};
-  S.items.forEach(it => {
+  (items || S.items).forEach(it => {
     r.counted += it.count;
     const st = statusOf(it); r[st]++;
     if (st !== 'none') { r.hasT = true; r.target += it.target; r.got += Math.min(it.count, it.target); }
   });
   return r;
 }
+
+function billLineText(){
+  const parts = [];
+  if (S.bill) parts.push(`${t('billWord')} ${S.bill}`);
+  if (S.party) parts.push(S.party);
+  if (S.plate) parts.push(S.plate);
+  return parts.length ? (DIR_ICON[S.dir] || '') + parts.join(' · ') : t('billPrompt');
+}
+function updateBillLine(){ $('#billLine').textContent = billLineText(); }
 
 function renderSummary(){
   const r = calc();
@@ -704,20 +931,22 @@ function renderSummary(){
   if (!chips.some(c => c[0] === S.filter)) S.filter = 'all';
   $('#chips').innerHTML = chips.map(([k,l,n]) =>
     `<button type="button" class="chip${S.filter===k?' on':''}" data-f="${k}">${esc(l)} <b>${n}</b></button>`).join('');
-  $('#billLine').textContent = S.bill ? `${t('billWord')} ${S.bill}` : t('billPrompt');
+  updateBillLine();
 }
 
 function rowHTML(it){
   const st = statusOf(it), act = it.id === S.activeId, open = it.id === openId;
+  const u = it.unit ? ' ' + esc(it.unit) : '';
   let meta;
-  if (st === 'none') meta = `<span class="tag none">${esc(t('tNone'))}</span>`;
+  if (st === 'none') meta = `<span class="tag none">${esc(t('tNone'))}</span>${u ? `<span>${u}</span>` : ''}`;
   else {
     const d = it.count - it.target;
-    meta = `<span>${esc(t('bill', {n:it.target}))}</span>` + (
+    meta = `<span>${esc(t('bill', {n:it.target}))}${u}</span>` + (
       st === 'short' ? `<span class="tag short">${esc(t('tShort',{n:-d}))}</span>` :
       st === 'ok'    ? `<span class="tag ok">${esc(t('tOk'))}</span>` :
                        `<span class="tag over">${esc(t('tOver',{n:d}))}</span>`);
   }
+  if (packOf(it)) meta += `<span class="tag pk">📦×${it.pack}</span>`;
   return `<li class="row st-${st}${act?' active':''}${open?' open':''}" data-id="${it.id}">
     <button class="del" type="button" data-act="del" aria-label="${esc(t('delAria',{name:it.name}))}">${ICON.trash}<span>${esc(t('del'))}</span></button>
     <div class="front">
@@ -750,18 +979,22 @@ function renderList(b){
   }
 }
 
+let stepsHTML = '';
 function renderDock(){
   const it = find(S.activeId);
   $('#dock').classList.toggle('idle', !it);
   $('#nowName').textContent = it ? it.name : t('pickItem');
   const st = it ? statusOf(it) : 'none';
   const col = {short:'#fff', ok:'var(--ok)', over:'var(--over)', none:'#fff'}[st];
-  $('#nowCnt').innerHTML = it ? `<span style="color:${col};font-size:30px;font-weight:700">${it.count}</span>${it.target!=null?`<span> / ${it.target}</span>`:''}` : '';
-  $$('#steps button').forEach(b => b.classList.toggle('on', +b.dataset.s === S.step));
-  const s = S.step > 1 ? S.step : '';
+  $('#nowCnt').innerHTML = it ? `<span style="color:${col};font-size:30px;font-weight:700">${it.count}</span>${it.target!=null?`<span> / ${it.target}</span>`:''}${it.unit?`<span class="u"> ${esc(it.unit)}</span>`:''}` : '';
+  const pk = packOf(it), on = S.step === 'p' && !pk ? 1 : S.step;
+  const html = [1,5,10].map(s => `<button type="button" data-s="${s}" class="${on===s?'on':''}">×${s}</button>`).join('') +
+    (pk ? `<button type="button" data-s="p" class="${on==='p'?'on':''}">📦×${pk}</button>` : '');
+  if (html !== stepsHTML) { $('#steps').innerHTML = stepsHTML = html; }
+  const n = stepVal(), s = n > 1 ? n : '';
   $('#bMinus').textContent = '−' + s;
   $('#bPlus').textContent = '+' + s;
-  $('#bMinus').style.fontSize = $('#bPlus').style.fontSize = S.step > 1 ? '56px' : '';
+  $('#bMinus').style.fontSize = $('#bPlus').style.fontSize = n >= 100 ? '44px' : n > 1 ? '56px' : '';
 }
 
 function render(b){ renderSummary(); renderList(b); renderDock(); }
@@ -798,24 +1031,43 @@ window.addEventListener('popstate', () => { if (sheetOpen) closeSheet(true); });
 wrap.addEventListener('click', e => { if (e.target === wrap) closeSheet(); });
 sheet.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheet(); });
 
+/* confirm dialog. On OK the sheet stays open: the caller closes it or shows the next sheet */
 function ask(title, msg, okLabel){
   return new Promise(res => {
     openSheet(`<div class="sh-title">${esc(title)}</div><p style="margin:0 0 16px;color:var(--mute);font-size:16px">${esc(msg)}</p>
       <div class="sh-actions"><button class="btn" data-close>${esc(t('cancel'))}</button><button class="btn danger" id="askOk">${esc(okLabel)}</button></div>`);
-    $('#askOk').onclick = () => { closeSheet(); res(true); };
+    $('#askOk').onclick = () => { obs.disconnect(); res(true); };
     const obs = new MutationObserver(() => { if (!wrap.classList.contains('show')) { obs.disconnect(); res(false); } });
     obs.observe(wrap, {attributes:true, attributeFilter:['class']});
   });
 }
 
+/* units: recent ones first, then the common ones for this language */
+function rememberUnit(u){ if (u) S.units = [u, ...S.units.filter(x => x !== u)].slice(0, 8); }
+function unitChipsHTML(cur){
+  const list = [...new Set([...S.units, ...(UNITS[S.lang] || UNITS.en)])].slice(0, 14);
+  return list.map(u => `<button type="button" class="uchip${u===cur?' on':''}" data-u="${esc(u)}">${esc(u)}</button>`).join('');
+}
+function bindUnitChips(input, box){
+  const sync = () => $$('.uchip', box).forEach(c => c.classList.toggle('on', c.dataset.u === input.value.trim()));
+  box.onclick = e => {
+    const c = e.target.closest('[data-u]'); if (!c) return;
+    input.value = input.value.trim() === c.dataset.u ? '' : c.dataset.u;
+    sync();
+  };
+  input.addEventListener('input', sync);
+}
+
 /* ---- add ---- */
+const SIZE_UNIT = /^(ml|cc|l|lt|ltr|g|gr|kg|mg|oz|lb|cm|mm|m|in|มล\.?|ซีซี|ลิตร|กรัม|ก\.|กก\.?|ซม\.?|มม\.?|นิ้ว|ມລ\.?|ລິດ|ກຣາມ|ກກ\.?|ກິໂລ)$/i;
 function parseBulk(text){
   const out = [];
   text.split(/\r?\n/).forEach(raw => {
     const line = raw.trim(); if (!line) return;
-    const m = line.replace(/[๐-๙]/g, c => THAI.indexOf(c)).match(/^(.*\S)[\s:：,xX×*\-–]+(\d+)\s*[^\d\s]{0,10}$/);
-    if (m) out.push({name:line.slice(0, m[1].length).trim(), target:parseInt(m[2],10)});
-    else out.push({name:line, target:null});
+    const m = line.replace(/[๐-๙]/g, c => THAI.indexOf(c)).match(/^(.*\S)[\s:：,xX×*\-–=]+(\d+)\s*([^\d\s]{0,12})$/);
+    // "Water 600ml" is a size, not a quantity
+    if (m && !(m[3] && SIZE_UNIT.test(m[3]))) out.push({name:line.slice(0, m[1].length).trim(), target:parseInt(m[2],10), unit:m[3] || ''});
+    else out.push({name:line, target:null, unit:''});
   });
   return out;
 }
@@ -825,7 +1077,11 @@ function openAdd(){
     <div class="seg" id="addTabs"><button type="button" class="on" data-m="one">${esc(t('tabOne'))}</button><button type="button" data-m="bulk">${esc(t('tabBulk'))}</button></div>
     <div id="addOne">
       <label>${esc(t('itemName'))}<input id="fName" type="text" autocomplete="off" enterkeyhint="next" placeholder="${esc(t('itemPh'))}"></label>
-      <label>${esc(t('billQty'))} <small>${esc(t('optional'))}</small><input id="fQty" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="${esc(t('qtyPh'))}"></label>
+      <div class="two">
+        <label>${esc(t('billQty'))} <small>${esc(t('optional'))}</small><input id="fQty" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="${esc(t('qtyPh'))}"></label>
+        <label>${esc(t('unit'))} <small>${esc(t('optional'))}</small><input id="fUnit" type="text" autocomplete="off" enterkeyhint="done" placeholder="${esc(t('unitPh'))}"></label>
+      </div>
+      <div class="unitchips" id="fChips">${unitChipsHTML('')}</div>
     </div>
     <div id="addBulk" hidden>
       <label>${esc(t('bulkLabel'))}
@@ -834,7 +1090,8 @@ function openAdd(){
     </div>
     <div class="sh-actions"><button class="btn" data-close>${esc(t('cancel'))}</button><button class="btn primary" id="addGo">${esc(t('addGo'))}</button></div>`);
   let mode = 'one';
-  const fName = $('#fName'), fQty = $('#fQty'), fBulk = $('#fBulk'), prev = $('#bulkPrev');
+  const fName = $('#fName'), fQty = $('#fQty'), fUnit = $('#fUnit'), fBulk = $('#fBulk'), prev = $('#bulkPrev');
+  bindUnitChips(fUnit, $('#fChips'));
   $('#addTabs').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     mode = b.dataset.m;
@@ -844,29 +1101,33 @@ function openAdd(){
   };
   fBulk.oninput = () => {
     const p = parseBulk(fBulk.value);
-    prev.innerHTML = p.map(x => `<div><span>${esc(x.name)}</span><b>${x.target==null?'—':x.target}</b></div>`).join('');
+    prev.innerHTML = p.map(x => `<div><span>${esc(x.name)}</span><b>${x.target==null?'—':x.target}${x.unit?' '+esc(x.unit):''}</b></div>`).join('');
   };
   const go = () => {
     if (mode === 'one') {
       const name = fName.value.trim();
       if (!name) { fName.focus(); fb('err'); return; }
       snap();
-      const it = {id:uid(), name, count:0, target:num(fQty.value)};
+      const unit = fUnit.value.trim();
+      const it = {id:uid(), name, count:0, target:num(fQty.value), unit, pack:null};
+      rememberUnit(unit);
       S.items.unshift(it); S.activeId = it.id;
-      closeSheet(); save(); render(); window.scrollTo({top:0, behavior:'smooth'}); fb('up');
+      closeSheet(); dirty(); render(); window.scrollTo({top:0, behavior:'smooth'}); fb('up');
     } else {
       const p = parseBulk(fBulk.value);
       if (!p.length) { fBulk.focus(); fb('err'); return; }
       snap();
-      const made = p.map(x => ({id:uid(), name:x.name, count:0, target:x.target}));
+      const made = p.map(x => ({id:uid(), name:x.name, count:0, target:x.target, unit:x.unit, pack:null}));
+      [...p].reverse().forEach(x => rememberUnit(x.unit));
       S.items = made.concat(S.items); S.activeId = made[0].id;
-      closeSheet(); save(); render(); window.scrollTo({top:0, behavior:'smooth'});
+      closeSheet(); dirty(); render(); window.scrollTo({top:0, behavior:'smooth'});
       toast(t('addedN', {n:made.length})); fb('up');
     }
   };
   $('#addGo').onclick = go;
   fName.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); fQty.focus(); } };
   fQty.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go(); } };
+  fUnit.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go(); } };
   setTimeout(() => fName.focus(), 150);
 }
 
@@ -880,60 +1141,493 @@ function openEdit(id){
       <label>${esc(t('fCounted'))}<input id="eCnt" type="text" inputmode="numeric" autocomplete="off" value="${it.count}"></label>
       <label>${esc(t('fOnBill'))}<input id="eTgt" type="text" inputmode="numeric" autocomplete="off" placeholder="${esc(t('notSet'))}" value="${it.target==null?'':it.target}"></label>
     </div>
+    <div class="two">
+      <label>${esc(t('unit'))}<input id="eUnit" type="text" autocomplete="off" placeholder="${esc(t('unitPh'))}" value="${esc(it.unit||'')}"></label>
+      <label>📦 ${esc(t('pack'))}<input id="ePack" type="text" inputmode="numeric" autocomplete="off" placeholder="${esc(t('packPh'))}" value="${packOf(it)||''}"></label>
+    </div>
+    <div class="unitchips" id="eChips">${unitChipsHTML(it.unit||'')}</div>
+    <div class="hint" style="margin:-4px 2px 14px">${esc(t('packHint'))}</div>
     <div class="sh-actions"><button class="btn" data-close>${esc(t('cancel'))}</button><button class="btn primary" id="eSave">${esc(t('save'))}</button></div>`);
+  bindUnitChips($('#eUnit'), $('#eChips'));
   $('#eCnt').onfocus = e => e.target.select();
   $('#eSave').onclick = () => {
     const name = $('#eName').value.trim();
     if (!name) { $('#eName').focus(); fb('err'); return; }
     snap();
+    const pk = num($('#ePack').value);
     it.name = name; it.count = num($('#eCnt').value) ?? 0; it.target = num($('#eTgt').value);
-    closeSheet(); save(); render({id}); fb('up');
+    it.unit = $('#eUnit').value.trim(); it.pack = pk > 1 ? pk : null;
+    rememberUnit(it.unit);
+    closeSheet(); dirty(); render({id}); fb('up');
   };
   setTimeout(() => $('#eCnt').focus(), 150);
 }
 
-/* ---- report ---- */
-function reportData(){
+/* ---- bill details ---- */
+function openBillInfo(){
+  const dirs = [['',t('dirNone')],['in','⬇ '+t('dirIn')],['out','⬆ '+t('dirOut')]];
+  openSheet(`
+    <div class="sh-title">${esc(t('billInfo'))}</div>
+    <label>${esc(t('billLabel'))}<input id="bNo" type="text" autocomplete="off" placeholder="${esc(t('billPh'))}" value="${esc(S.bill)}"></label>
+    <label>${esc(t('party'))}<input id="bParty" type="text" autocomplete="off" placeholder="${esc(t('partyPh'))}" value="${esc(S.party)}"></label>
+    <label>${esc(t('plate'))}<input id="bPlate" type="text" autocomplete="off" placeholder="${esc(t('platePh'))}" value="${esc(S.plate)}"></label>
+    <div class="lbl">${esc(t('dirLabel'))}</div>
+    <div class="seg" id="bDir">${dirs.map(([k,l]) => `<button type="button" data-d="${k}" class="${S.dir===k?'on':''}">${esc(l)}</button>`).join('')}</div>
+    <label>${esc(t('note'))}<input id="bNote" type="text" autocomplete="off" value="${esc(S.note)}"></label>
+    <div class="rep-meta" style="margin:0 0 14px">${esc(t('created'))} ${fmtDT(S.createdAt)}</div>
+    <div class="sh-actions even"><button class="btn" id="bNew">${esc(t('newBill'))}</button><button class="btn primary" data-close>${esc(t('done'))}</button></div>`);
+  [['#bNo','bill'],['#bParty','party'],['#bPlate','plate'],['#bNote','note']].forEach(([sel, k]) => {
+    $(sel).oninput = e => { S[k] = e.target.value.trim(); dirty(); updateBillLine(); };
+  });
+  $('#bDir').onclick = e => {
+    const b = e.target.closest('[data-d]'); if (!b) return;
+    S.dir = b.dataset.d; dirty(); updateBillLine();
+    $$('#bDir button').forEach(x => x.classList.toggle('on', x === b));
+  };
+  $('#bNew').onclick = () => { closeSheet(); newBill(); };
+  if (!S.bill) setTimeout(() => $('#bNo').focus(), 150);
+}
+
+/* ---- switching bills ---- */
+function loadBill(b){
+  Object.assign(S, {billId:b.id, bill:b.bill||'', party:b.party||'', plate:b.plate||'', dir:b.dir||'', note:b.note||'',
+    items:b.items||[], createdAt:b.createdAt||Date.now(), updatedAt:b.updatedAt||Date.now(), activeId:null, filter:'all'});
+  undoStack.length = 0; $('#undo').disabled = true; openId = null;
+  save(); render();
+}
+const freshBill = () => loadBill({id:uid(), items:[], createdAt:Date.now(), updatedAt:Date.now()});
+async function newBill(){
+  const prev = curBill();
+  await persistNow();
+  freshBill();
+  window.scrollTo({top:0});
+  if (!isBlank(prev)) toast(t('savedToHist'), {label:t('reopen'), fn:() => openBillById(prev.id)});
+  fb('up');
+}
+async function openBillById(id){
+  if (id !== S.billId) {
+    await persistNow();
+    const b = await DB.get(id).catch(() => null);
+    if (!b) return;
+    loadBill(b);
+    toast(t('opened', {b: b.bill || t('noBillShort')}));
+  }
+  closeSheet(); window.scrollTo({top:0});
+}
+
+/* ---- report (works for the current bill or any bill from History) ---- */
+function reportData(items){
   const g = {short:[], over:[], ok:[], none:[]};
-  S.items.forEach(it => g[statusOf(it)].push(it));
+  items.forEach(it => g[statusOf(it)].push(it));
   return g;
 }
-function reportText(){
-  const g = reportData(), d = new Date(), p = n => String(n).padStart(2,'0');
-  const when = `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+const unitSfx = i => i.unit ? ' ' + i.unit : '';
+function reportText(b){
+  const g = reportData(b.items);
   const L = ['GoodsCount'];
-  if (S.bill) L.push(`${t('repBill')}: ${S.bill}`);
-  L.push(`${t('repTime')}: ${when}`, t('repStats', {ok:g.ok.length, s:g.short.length, o:g.over.length, n:g.none.length}), '');
-  g.short.forEach(i => L.push(`⚠️ ${t('tShort',{n:i.target-i.count})}  ${i.name}  (${i.count}/${i.target})`));
-  g.over.forEach(i  => L.push(`❌ ${t('tOver',{n:i.count-i.target})}  ${i.name}  (${i.count}/${i.target})`));
-  g.ok.forEach(i    => L.push(`✅ ${t('tOk')}  ${i.name}  (${i.count}/${i.target})`));
-  g.none.forEach(i  => L.push(`• ${i.name}  ${t('repCountedN',{n:i.count})}`));
+  if (b.bill) L.push(`${t('repBill')}: ${b.bill}`);
+  const info = [b.dir ? t(b.dir === 'in' ? 'dirIn' : 'dirOut') : '', b.party, b.plate].filter(Boolean);
+  if (info.length) L.push(info.join(' · '));
+  if (b.note) L.push(`${t('note')}: ${b.note}`);
+  L.push(`${t('repTime')}: ${fmtDT(b.updatedAt)}`, t('repStats', {ok:g.ok.length, s:g.short.length, o:g.over.length, n:g.none.length}), '');
+  g.short.forEach(i => L.push(`⚠️ ${t('tShort',{n:i.target-i.count})}  ${i.name}  (${i.count}/${i.target}${unitSfx(i)})`));
+  g.over.forEach(i  => L.push(`❌ ${t('tOver',{n:i.count-i.target})}  ${i.name}  (${i.count}/${i.target}${unitSfx(i)})`));
+  g.ok.forEach(i    => L.push(`✅ ${t('tOk')}  ${i.name}  (${i.count}/${i.target}${unitSfx(i)})`));
+  g.none.forEach(i  => L.push(`• ${i.name}  ${t('repCountedN',{n:i.count})}${unitSfx(i)}`));
   return L.join('\n');
+}
+function groupsHTML(b){
+  const g = reportData(b.items);
+  const grp = (title, color, arr, fmt) => arr.length ? `<div class="rep-group"><h3 style="color:${color}">${esc(title)} (${arr.length})</h3>${arr.map(i => `<div class="rep-item"><span>${esc(i.name)}</span><span>${fmt(i)}</span></div>`).join('')}</div>` : '';
+  const sub = i => `<span style="color:var(--mute)">(${i.count}/${i.target}${esc(unitSfx(i))})</span>`;
+  return grp(t('gShort'),'var(--short)',g.short,i=>`${esc(t('tShort',{n:i.target-i.count}))} ${sub(i)}`) +
+    grp(t('gOver'),'var(--over)',g.over,i=>`${esc(t('tOver',{n:i.count-i.target}))} ${sub(i)}`) +
+    grp(t('gOk'),'var(--ok)',g.ok,i=>`${i.count}/${i.target}${esc(unitSfx(i))}`) +
+    grp(t('gNone'),'var(--mute)',g.none,i=>esc(t('repCountedN',{n:i.count}) + unitSfx(i)));
+}
+function billMetaHTML(b){
+  const head = b.bill ? esc(t('billWord')) + ' ' + esc(b.bill) : esc(t('noBillNo'));
+  const info = [b.dir ? DIR_ICON[b.dir] + t(b.dir === 'in' ? 'dirIn' : 'dirOut') : '', b.party, b.plate].filter(Boolean).map(esc).join(' · ');
+  return head + (info ? '<br>' + info : '') + (b.note ? '<br>' + esc(t('note')) + ': ' + esc(b.note) : '');
+}
+async function copyText(tx){
+  try { await navigator.clipboard.writeText(tx); }
+  catch(e){ const a = document.createElement('textarea'); a.value = tx; document.body.appendChild(a); a.select(); try{document.execCommand('copy');}catch(_){} a.remove(); }
+  toast(t('copied'));
+}
+async function shareText(tx){
+  if (navigator.share) { try{ await navigator.share({title:'GoodsCount', text:tx}); }catch(e){} }
+  else { try{ await navigator.clipboard.writeText(tx); toast(t('shareFallback')); }catch(e){ toast(t('noShare')); } }
 }
 function openSummary(){
   if (!S.items.length) { toast(t('nothingSum')); return; }
-  const g = reportData();
-  const grp = (title, color, arr, fmt) => arr.length ? `<div class="rep-group"><h3 style="color:${color}">${esc(title)} (${arr.length})</h3>${arr.map(i => `<div class="rep-item"><span>${esc(i.name)}</span><span>${fmt(i)}</span></div>`).join('')}</div>` : '';
-  const sub = i => `<span style="color:var(--mute)">(${i.count}/${i.target})</span>`;
+  const b = curBill();
   openSheet(`
     <div class="sh-title">${esc(t('sumTitle'))}</div>
-    <div class="rep-meta">${S.bill ? esc(t('billWord')) + ' ' + esc(S.bill) : esc(t('noBillNo'))}</div>
-    ${grp(t('gShort'),'var(--short)',g.short,i=>`${esc(t('tShort',{n:i.target-i.count}))} ${sub(i)}`)}
-    ${grp(t('gOver'),'var(--over)',g.over,i=>`${esc(t('tOver',{n:i.count-i.target}))} ${sub(i)}`)}
-    ${grp(t('gOk'),'var(--ok)',g.ok,i=>`${i.count}/${i.target}`)}
-    ${grp(t('gNone'),'var(--mute)',g.none,i=>esc(t('repCountedN',{n:i.count})))}
-    <div class="sh-actions three"><button class="btn" data-close>${esc(t('close'))}</button><button class="btn" id="rCopy">${esc(t('copy'))}</button><button class="btn primary" id="rShare">${esc(t('share'))}</button></div>`);
-  $('#rCopy').onclick = async () => {
-    const tx = reportText();
-    try { await navigator.clipboard.writeText(tx); }
-    catch(e){ const a = document.createElement('textarea'); a.value = tx; document.body.appendChild(a); a.select(); try{document.execCommand('copy');}catch(_){} a.remove(); }
-    toast(t('copied'));
+    <div class="rep-meta">${billMetaHTML(b)}</div>
+    ${groupsHTML(b)}
+    <div class="sh-actions one"><button class="btn primary" id="rImg">🖼 ${esc(t('image'))}</button></div>
+    <div class="sh-actions three"><button class="btn" data-close>${esc(t('close'))}</button><button class="btn" id="rCopy">${esc(t('copy'))}</button><button class="btn" id="rShare">${esc(t('share'))}</button></div>`);
+  $('#rCopy').onclick = () => copyText(reportText(b));
+  $('#rShare').onclick = () => shareText(reportText(b));
+  $('#rImg').onclick = () => openImage(curBill(), openSummary);
+}
+
+/* ================= files: share or download ================= */
+function download(f){
+  const u = URL.createObjectURL(f), a = document.createElement('a');
+  a.href = u; a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 10000);
+}
+/* true = shared, false = user cancelled, null = sharing files not possible here */
+async function shareFiles(files){
+  try { if (!(navigator.canShare && navigator.canShare({files}))) return null; }
+  catch(e){ return null; }
+  try { await navigator.share({files, title:'GoodsCount'}); return true; }
+  catch(e){ return e && e.name === 'AbortError' ? false : null; }
+}
+
+/* ================= image export ================= */
+const IMG = {ink:'#0f172a', mute:'#64748b', line:'#e2e8f0', head:'#0b1230', zebra:'#f8fafc',
+  col:{short:'#c2410c', ok:'#047857', over:'#b91c1c', none:'#64748b'},
+  bg:{short:'#ffedd5', ok:'#d1fae5', over:'#fee2e2', none:'#f1f5f9'},
+  row:{short:'#fff9f2', over:'#fff5f5'}};
+// canvas size limits: iPhone/iPad Safari allows ~16.7 million pixels per canvas
+const MAX_AREA = isIOS ? 16.7e6 : 60e6, MAX_DIM = isIOS ? 16000 : 32000;
+const SEG = (() => { try { return new Intl.Segmenter(undefined, {granularity:'word'}); } catch(e){ return null; } })();
+const pieces = s => SEG ? Array.from(SEG.segment(s), x => x.segment) : (s.match(/\s+|\S\p{M}*/gu) || []);
+function wrapText(ctx, text, maxW, maxLines){
+  const out = []; let line = '';
+  const push = () => { out.push(line.trim()); line = ''; };
+  for (const p of pieces(String(text))) {
+    if (ctx.measureText(line + p).width <= maxW) { line += p; continue; }
+    if (line.trim()) push();
+    if (/^\s+$/.test(p)) continue;
+    if (ctx.measureText(p).width <= maxW) { line = p; continue; }
+    for (const ch of p.match(/[^]\p{M}*/gu)) { if (line && ctx.measureText(line + ch).width > maxW) push(); line += ch; }
+  }
+  if (line.trim()) push();
+  if (out.length > maxLines) {
+    const keep = out.slice(0, maxLines); let last = keep[maxLines - 1];
+    while (last && ctx.measureText(last + '…').width > maxW) last = last.slice(0, -1);
+    keep[maxLines - 1] = last + '…';
+    return keep;
+  }
+  return out.length ? out : [''];
+}
+const fit = (ctx, s, w) => wrapText(ctx, s, w, 1)[0];
+function rr(ctx, x, y, w, h, r){
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+async function drawBillImages(b, cols, sort){
+  const F = fontStack();
+  const sample = [b.bill, b.party, b.plate, b.note, ...b.items.map(i => i.name + ' ' + (i.unit || ''))].join(' ').slice(0, 5000) + ' กขค ກຂຄ Abc 0123456789';
+  try { await Promise.all([400,500,600,700].map(w => document.fonts.load(`${w} 20px ${F}`, sample))); } catch(e){}
+
+  const order = {short:0, over:1, ok:2, none:3};
+  const items = b.items.map((it, i) => ({it, i, st:statusOf(it)}));
+  if (sort === 'prob') items.sort((a, z) => order[a.st] - order[z.st] || a.i - z.i);
+
+  const PAD = 32, GAP = 28, COLW = {1:700, 2:560, 3:540}[cols];
+  const W = PAD * 2 + cols * COLW + (cols - 1) * GAP;
+  const X_CNT = COLW - 206, X_BILL = COLW - 126, NAME_X = 48, NAME_W = COLW - 346;
+  const mc = document.createElement('canvas').getContext('2d');
+
+  // measure rows
+  mc.font = `600 21px ${F}`;
+  const rows = items.map((r, k) => {
+    const lines = wrapText(mc, r.it.name, NAME_W, 3);
+    const meta = [r.it.unit, packOf(r.it) ? `📦×${r.it.pack}` : ''].filter(Boolean).join('  ·  ');
+    return Object.assign(r, {no:k + 1, lines, meta, h:Math.max(58, 28 + lines.length * 29 + (meta ? 22 : 0))});
+  });
+  const st = calc(b.items);
+  const info = [b.dir ? DIR_ICON[b.dir] + t(b.dir === 'in' ? 'dirIn' : 'dirOut') : '', b.party, b.plate].filter(Boolean).join('  ·  ');
+  const H_BAND = 112, H_INFO = 30 + (b.note ? 28 : 0), H_STATS = 72, H_HEAD = 40, HF = 56;
+  const H0 = H_BAND + 18 + H_INFO + 14 + H_STATS + 20 + H_HEAD;
+
+  // scale: as sharp as possible, within what the phone can make
+  const sMax = {1:3, 2:2.2, 3:1.6}[cols], sMin = {1:2, 2:1.6, 3:1.3}[cols];
+  const total = rows.reduce((a, r) => a + r.h, 0);
+  const estH = H0 + HF + total / cols + 60;
+  const s = Math.max(sMin, Math.min(sMax, Math.sqrt(MAX_AREA / (W * estH)), MAX_DIM / estH));
+  const capBody = Math.max(300, Math.min(MAX_DIM, MAX_AREA / (W * s)) * .95 / s - H0 - HF);
+
+  // split rows into pages, then balance each page across the columns
+  const pages = [];
+  for (let i = 0; i < rows.length || !pages.length;) {
+    let j = i, sum = 0;
+    while (j < rows.length && sum + rows[j].h <= cols * capBody) { sum += rows[j].h; j++; }
+    if (j === i && i < rows.length) { sum = rows[i].h; j = i + 1; }
+    const target = sum / cols, colsArr = [[]]; let ch = 0;
+    rows.slice(i, j).forEach(r => {
+      if (colsArr.length < cols && ch > 0 && (ch + r.h / 2 > target || ch + r.h > capBody)) { colsArr.push([]); ch = 0; }
+      colsArr[colsArr.length - 1].push(r); ch += r.h;
+    });
+    pages.push(colsArr);
+    if (j === i) break;
+    i = j;
+  }
+
+  const now = Date.now();
+  return pages.map((page, pi) => {
+    const bodyH = Math.max(80, ...page.map(c => c.reduce((a, r) => a + r.h, 0)));
+    const H = H0 + bodyH + HF;
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(W * s); cv.height = Math.round(H * s);
+    const ctx = cv.getContext('2d');
+    ctx.setTransform(s, 0, 0, s, 0, 0);
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+
+    // header band
+    ctx.fillStyle = IMG.head; ctx.fillRect(0, 0, W, H_BAND);
+    const gr = ctx.createLinearGradient(0, 0, W, 0); gr.addColorStop(0, '#5ee7ff'); gr.addColorStop(1, '#3df0a5');
+    ctx.fillStyle = gr; ctx.fillRect(0, H_BAND - 5, W, 5);
+    ctx.textAlign = 'left'; ctx.fillStyle = '#5ee7ff'; ctx.font = `600 18px ${F}`; ctx.fillText('GoodsCount', PAD, 30);
+    ctx.fillStyle = '#fff'; ctx.font = `700 34px ${F}`;
+    ctx.fillText(fit(ctx, b.bill ? `${t('repBill')} ${b.bill}` : t('noBillShort'), W - PAD * 2 - 260), PAD, 72);
+    ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(255,255,255,.78)'; ctx.font = `500 18px ${F}`;
+    ctx.fillText(fmtDT(b.updatedAt), W - PAD, 30);
+    ctx.fillStyle = '#fff'; ctx.font = `600 22px ${F}`;
+    ctx.fillText(t('items', {n:b.items.length}) + (pages.length > 1 ? '  ·  ' + t('page', {a:pi + 1, b:pages.length}) : ''), W - PAD, 72);
+
+    // info + totals
+    let y = H_BAND + 18 + 15;
+    const tot = t('totals', {c:st.counted, b:st.hasT ? st.target : '—'});
+    ctx.font = `700 20px ${F}`; ctx.fillStyle = IMG.ink; ctx.textAlign = 'right'; ctx.fillText(tot, W - PAD, y);
+    const totW = ctx.measureText(tot).width;
+    ctx.textAlign = 'left'; ctx.font = `500 19px ${F}`;
+    if (info) ctx.fillText(fit(ctx, info, W - PAD * 2 - totW - 24), PAD, y);
+    if (b.note) { y += 28; ctx.fillStyle = IMG.mute; ctx.font = `400 17px ${F}`; ctx.fillText(fit(ctx, `${t('note')}: ${b.note}`, W - PAD * 2), PAD, y); }
+
+    // status boxes
+    y = H_BAND + 18 + H_INFO + 14;
+    const boxes = [['ok', t('gOk'), st.ok], ['short', t('gShort'), st.short], ['over', t('gOver'), st.over], ['none', t('tNone'), st.none]];
+    const bw = (W - PAD * 2 - 3 * 12) / 4;
+    boxes.forEach(([k, label, n], i) => {
+      const x = PAD + i * (bw + 12);
+      ctx.fillStyle = IMG.bg[k]; rr(ctx, x, y, bw, H_STATS, 14); ctx.fill();
+      ctx.fillStyle = IMG.col[k]; ctx.textAlign = 'left';
+      ctx.font = `600 16px ${F}`; ctx.fillText(fit(ctx, label, bw - 70), x + 16, y + H_STATS / 2);
+      ctx.font = `700 34px ${F}`; ctx.textAlign = 'right'; ctx.fillText(String(n), x + bw - 16, y + H_STATS / 2);
+    });
+
+    // columns
+    const yHead = H0 - H_HEAD;
+    page.forEach((col, ci) => {
+      const x0 = PAD + ci * (COLW + GAP);
+      ctx.fillStyle = IMG.mute; ctx.font = `600 15px ${F}`;
+      const hy = yHead + H_HEAD / 2;
+      ctx.textAlign = 'right'; ctx.fillText('#', x0 + 38, hy);
+      ctx.textAlign = 'left'; ctx.fillText(t('colItem'), x0 + NAME_X, hy);
+      ctx.textAlign = 'right'; ctx.fillText(t('colCount'), x0 + X_CNT, hy); ctx.fillText(t('colBill'), x0 + X_BILL, hy);
+      ctx.textAlign = 'center'; ctx.fillText(t('colResult'), x0 + COLW - 58, hy);
+      ctx.fillStyle = IMG.ink; ctx.fillRect(x0, H0 - 2, COLW, 2);
+      let ry = H0;
+      col.forEach((r, k) => {
+        const {it, h} = r, sx = r.st;
+        ctx.fillStyle = IMG.row[sx] || (k % 2 ? IMG.zebra : '#fff'); ctx.fillRect(x0, ry, COLW, h);
+        ctx.fillStyle = IMG.line; ctx.fillRect(x0, ry + h - 1, COLW, 1);
+        if (sx !== 'none') { ctx.fillStyle = IMG.col[sx]; ctx.fillRect(x0, ry, 4, h - 1); }
+        ctx.fillStyle = IMG.mute; ctx.font = `500 15px ${F}`; ctx.textAlign = 'right'; ctx.fillText(String(r.no), x0 + 38, ry + 14 + 14.5);
+        ctx.fillStyle = IMG.ink; ctx.font = `600 21px ${F}`; ctx.textAlign = 'left';
+        r.lines.forEach((ln, li) => ctx.fillText(ln, x0 + NAME_X, ry + 14 + 14.5 + li * 29));
+        if (r.meta) { ctx.fillStyle = IMG.mute; ctx.font = `400 15px ${F}`; ctx.fillText(r.meta, x0 + NAME_X, ry + 14 + r.lines.length * 29 + 10); }
+        const cy = ry + h / 2;
+        ctx.textAlign = 'right';
+        ctx.fillStyle = sx === 'none' ? IMG.ink : IMG.col[sx]; ctx.font = `700 26px ${F}`; ctx.fillText(String(it.count), x0 + X_CNT, cy);
+        ctx.fillStyle = IMG.mute; ctx.font = `500 22px ${F}`; ctx.fillText(it.target == null ? '—' : String(it.target), x0 + X_BILL, cy);
+        const label = sx === 'short' ? t('tShort', {n:it.target - it.count}) : sx === 'ok' ? t('tOk') : sx === 'over' ? t('tOver', {n:it.count - it.target}) : '—';
+        ctx.fillStyle = IMG.bg[sx]; rr(ctx, x0 + COLW - 112, cy - 18, 108, 36, 12); ctx.fill();
+        ctx.fillStyle = IMG.col[sx]; ctx.font = `700 17px ${F}`; ctx.textAlign = 'center'; ctx.fillText(fit(ctx, label, 100), x0 + COLW - 58, cy);
+        ry += h;
+      });
+      if (ci > 0) { ctx.fillStyle = IMG.line; ctx.fillRect(x0 - GAP / 2, yHead, 1, bodyH + H_HEAD); }
+    });
+
+    // footer
+    const fy = H - HF;
+    ctx.fillStyle = IMG.line; ctx.fillRect(PAD, fy + 8, W - PAD * 2, 1);
+    ctx.fillStyle = IMG.mute; ctx.font = `400 15px ${F}`; ctx.textAlign = 'left';
+    ctx.fillText(`${t('madeWith')}  ·  ${fmtDT(now)}`, PAD, fy + 32);
+    if (pages.length > 1) { ctx.textAlign = 'right'; ctx.fillText(t('page', {a:pi + 1, b:pages.length}), W - PAD, fy + 32); }
+    return cv;
+  });
+}
+const fileBase = b => `GoodsCount_${(b.bill || 'bill').replace(/[\\/:*?"<>|\s]+/g, '-').slice(0, 40)}_${stamp(b.updatedAt)}`;
+function openImage(b, back){
+  const seg = (id, key, opts) => `<div class="seg" id="${id}">${opts.map(([v, l]) => `<button type="button" data-v="${v}" class="${String(S[key])===String(v)?'on':''}">${esc(l)}</button>`).join('')}</div>`;
+  openSheet(`
+    <div class="sh-title">${esc(t('imgTitle'))}</div>
+    ${seg('iCols', 'imgCols', [[1, t('cols1')], [2, t('cols2')], [3, t('cols3')]])}
+    ${seg('iSort', 'imgSort', [['prob', t('sortProb')], ['orig', t('sortOrig')]])}
+    <div class="imgprev" id="iPrev"></div>
+    <div class="rep-meta" id="iInfo" style="margin:0 0 10px"></div>
+    <div class="sh-actions three"><button class="btn" id="iBack">${esc(t('back'))}</button><button class="btn" id="iSave">${esc(t('saveImg'))}</button><button class="btn primary" id="iShare">${esc(t('shareImg'))}</button></div>`);
+  let files = [], urls = [], token = 0;
+  const gen = async () => {
+    const my = ++token;
+    urls.forEach(u => URL.revokeObjectURL(u)); urls = []; files = [];
+    $('#iPrev').innerHTML = `<div class="mk">${esc(t('making'))}</div>`; $('#iInfo').textContent = '';
+    await new Promise(r => setTimeout(r, 30));
+    try {
+      const cvs = await drawBillImages(b, S.imgCols, S.imgSort);
+      const blobs = [];
+      for (const c of cvs) {
+        const bl = await new Promise(r => c.toBlob(r, 'image/png'));
+        if (!bl) throw new Error('toBlob');
+        blobs.push(bl);
+      }
+      if (my !== token || !$('#iPrev')) return;
+      files = blobs.map((bl, i) => new File([bl], fileBase(b) + (blobs.length > 1 ? `_${i + 1}` : '') + '.png', {type:'image/png'}));
+      urls = files.map(f => URL.createObjectURL(f));
+      $('#iPrev').innerHTML = urls.map(u => `<img src="${u}" alt="">`).join('');
+      $('#iInfo').textContent = t('imgInfo', {w:cvs[0].width, h:cvs[0].height, p:cvs.length});
+      cvs.forEach(c => { c.width = c.height = 0; });
+    } catch(e) {
+      if (my === token && $('#iPrev')) $('#iPrev').innerHTML = `<div class="mk">${esc(t('imgFail'))}</div>`;
+    }
   };
-  $('#rShare').onclick = async () => {
-    const tx = reportText();
-    if (navigator.share) { try{ await navigator.share({title:'GoodsCount', text:tx}); }catch(e){} }
-    else { try{ await navigator.clipboard.writeText(tx); toast(t('shareFallback')); }catch(e){ toast(t('noShare')); } }
+  const pick = (id, key, cast) => { $(id).onclick = e => {
+    const x = e.target.closest('[data-v]'); if (!x) return;
+    S[key] = cast(x.dataset.v); save();
+    $$(id + ' button').forEach(y => y.classList.toggle('on', y === x));
+    gen();
+  }; };
+  pick('#iCols', 'imgCols', Number); pick('#iSort', 'imgSort', String);
+  $('#iBack').onclick = () => back();
+  $('#iSave').onclick = () => { if (!files.length) return; files.forEach(download); toast(t('imgSaved')); };
+  $('#iShare').onclick = async () => {
+    if (!files.length) return;
+    const r = await shareFiles(files);
+    if (r === null) { files.forEach(download); toast(t('imgSaved')); }
   };
+  gen();
+}
+
+/* ================= history ================= */
+let histQ = '', histTrash = false;
+function dayLabel(ts){
+  const d = new Date(ts), n = new Date();
+  const k = x => x.getFullYear() + '-' + x.getMonth() + '-' + x.getDate();
+  if (k(d) === k(n)) return t('today');
+  n.setDate(n.getDate() - 1);
+  if (k(d) === k(n)) return t('yesterday');
+  return fmtDate(ts);
+}
+function statusTags(items){
+  const r = calc(items);
+  if (!r.hasT) return '';
+  if (!r.short && !r.over) return `<span class="tag ok">${esc(t('tOk'))}</span>`;
+  return (r.short ? `<span class="tag short">${esc(t('fShort'))} ${r.short}</span>` : '') + (r.over ? `<span class="tag over">${esc(t('fOver'))} ${r.over}</span>` : '');
+}
+function histCard(b){
+  const cur = b.id === S.billId;
+  return `<button type="button" class="hcard${cur?' cur':''}" data-hid="${esc(b.id)}">
+    <div class="h1"><span>${DIR_ICON[b.dir] || ''}${esc(b.bill || t('noBillShort'))}</span><span>${fmtTime(b.updatedAt)}</span></div>
+    <div class="h2">${b.party ? `<span>${esc(b.party)}</span>` : ''}${b.plate ? `<span>🚚 ${esc(b.plate)}</span>` : ''}<span>${esc(t('items', {n:b.items.length}))}</span>${statusTags(b.items)}${cur ? `<span class="tag cur">${esc(t('curTag'))}</span>` : ''}</div>
+  </button>`;
+}
+async function openHistory(){
+  await persistNow();
+  const all = await DB.all().catch(() => []);
+  all.sort((a, z) => (z.updatedAt || 0) - (a.updatedAt || 0));
+  const live = all.filter(b => !b.deleted), trash = all.filter(b => b.deleted);
+  openSheet(`
+    <div class="sh-title">${esc(t('hist'))}</div>
+    <input id="hQ" type="search" autocomplete="off" placeholder="${esc(t('histSearch'))}" value="${esc(histQ)}">
+    <div class="seg" id="hTabs"><button type="button" data-h="0" class="${histTrash?'':'on'}">${esc(t('hAll'))} ${live.length}</button><button type="button" data-h="1" class="${histTrash?'on':''}">🗑 ${esc(t('hTrash'))} ${trash.length}</button></div>
+    <div id="hList"></div>
+    <div class="hint${S.lastBackup ? '' : ' warn'}" style="margin:14px 2px 10px">${esc(S.lastBackup ? t('lastBackup', {d:fmtDT(S.lastBackup)}) : t('neverBackup'))}</div>
+    <div class="sh-actions even"><button class="btn" id="hBackup">${esc(t('backup'))}</button><button class="btn" id="hImport">${esc(t('importB'))}</button></div>
+    <div class="sh-actions one"><button class="btn primary" data-close>${esc(t('close'))}</button></div>
+    <input type="file" id="hFile" accept=".json,application/json" hidden>`);
+  const draw = () => {
+    const q = histQ.trim().toLowerCase();
+    const arr = (histTrash ? trash : live).filter(b => !q ||
+      [b.bill, b.party, b.plate, b.note, ...b.items.map(i => i.name)].join(' ').toLowerCase().includes(q));
+    let html = histTrash ? `<div class="hint" style="margin:0 2px 8px">${esc(t('trashNote'))}</div>` : '', last = '';
+    arr.forEach(b => { const d = dayLabel(b.updatedAt); if (d !== last) { html += `<div class="hday">${esc(d)}</div>`; last = d; } html += histCard(b); });
+    $('#hList').innerHTML = arr.length ? html : html + `<div class="hempty">${esc(t('histEmpty'))}</div>`;
+  };
+  $('#hQ').oninput = e => { histQ = e.target.value; draw(); };
+  $('#hTabs').onclick = e => {
+    const x = e.target.closest('[data-h]'); if (!x) return;
+    histTrash = x.dataset.h === '1';
+    $$('#hTabs button').forEach(y => y.classList.toggle('on', y === x));
+    draw();
+  };
+  $('#hList').onclick = e => { const c = e.target.closest('[data-hid]'); if (c) openHistDetail(c.dataset.hid); };
+  $('#hBackup').onclick = doBackup;
+  $('#hImport').onclick = () => $('#hFile').click();
+  $('#hFile').onchange = e => { const f = e.target.files[0]; if (f) doImport(f); };
+  draw();
+}
+async function openHistDetail(id){
+  const b = id === S.billId ? curBill() : await DB.get(id).catch(() => null);
+  if (!b) return;
+  const cur = id === S.billId;
+  openSheet(`
+    <div class="sh-title">${DIR_ICON[b.dir] || ''}${esc(b.bill || t('noBillShort'))}</div>
+    <div class="rep-meta">${billMetaHTML(b)}<br>${esc(t('created'))} ${fmtDT(b.createdAt)} · ${esc(t('updated'))} ${fmtDT(b.updatedAt)}</div>
+    ${b.items.length ? groupsHTML(b) : `<div class="hempty">${esc(t('emptyT'))}</div>`}
+    ${b.deleted ? `
+      <div class="sh-actions one"><button class="btn primary" id="dRestore">${esc(t('restore'))}</button></div>
+      <div class="sh-actions even"><button class="btn" id="dBack">${esc(t('back'))}</button><button class="btn danger" id="dKill">${esc(t('delForever'))}</button></div>` : `
+      <div class="sh-actions one"><button class="btn primary" id="dOpen">${esc(cur ? t('backToCount') : t('openEditBill'))}</button></div>
+      <div class="sh-actions three"><button class="btn" id="dImg">🖼 ${esc(t('image'))}</button><button class="btn" id="dCopy">${esc(t('copy'))}</button><button class="btn" id="dShare">${esc(t('share'))}</button></div>
+      <div class="sh-actions even"><button class="btn" id="dBack">${esc(t('back'))}</button><button class="btn danger" id="dTrash">${esc(t('toTrash'))}</button></div>`}`);
+  $('#dBack').onclick = openHistory;
+  if (b.deleted) {
+    $('#dRestore').onclick = async () => { delete b.deleted; await dbq(() => DB.put(b)); toast(t('restored')); histTrash = false; openHistory(); };
+    $('#dKill').onclick = async () => {
+      if (!(await ask(t('delForever'), t('delForeverMsg'), t('delForever')))) return;
+      await dbq(() => DB.del(b.id)); openHistory();
+    };
+    return;
+  }
+  $('#dOpen').onclick = () => openBillById(b.id);
+  $('#dImg').onclick = () => openImage(b, () => openHistDetail(id));
+  $('#dCopy').onclick = () => copyText(reportText(b));
+  $('#dShare').onclick = () => shareText(reportText(b));
+  $('#dTrash').onclick = async () => {
+    if (cur) { clearTimeout(persistT); persistT = null; }
+    b.deleted = Date.now();
+    await dbq(() => DB.put(b));
+    if (cur) freshBill();
+    toast(t('trashMsg'), {label:t('undo'), fn: async () => { delete b.deleted; await dbq(() => DB.put(b)); toast(t('restored')); }});
+    openHistory();
+  };
+}
+async function doBackup(){
+  await persistNow();
+  const bills = await DB.all().catch(() => []);
+  const data = {app:'GoodsCount', kind:'backup', version:APP_VERSION, exportedAt:new Date().toISOString(), bills};
+  const f = new File([JSON.stringify(data)], `GoodsCount-backup-${stamp()}.json`, {type:'application/json'});
+  let r = await shareFiles([f]);
+  if (r === null) { download(f); r = true; }
+  if (r) { S.lastBackup = Date.now(); save(); toast(t('backupDone', {n:bills.length})); if (sheetOpen && $('#hList')) openHistory(); }
+}
+async function doImport(file){
+  try {
+    const d = JSON.parse(await file.text());
+    const arr = Array.isArray(d) ? d : d && d.bills;
+    if (!Array.isArray(arr)) throw new Error('bad');
+    let n = 0;
+    for (const x of arr) {
+      if (!x || typeof x.id !== 'string' || !Array.isArray(x.items) || x.id === S.billId) continue;
+      const b = {id:x.id, bill:String(x.bill || ''), party:String(x.party || ''), plate:String(x.plate || ''), dir:['in','out'].includes(x.dir) ? x.dir : '',
+        note:String(x.note || ''), createdAt:+x.createdAt || Date.now(), updatedAt:+x.updatedAt || Date.now(),
+        items:x.items.filter(i => i && i.name != null).map(i => ({id:String(i.id || uid()), name:String(i.name), count:Math.max(0, parseInt(i.count, 10) || 0),
+          target:i.target == null || i.target === '' ? null : Math.max(0, parseInt(i.target, 10) || 0), unit:String(i.unit || ''), pack:+i.pack > 1 ? parseInt(i.pack, 10) : null}))};
+      if (x.deleted) b.deleted = +x.deleted || Date.now();
+      const old = await DB.get(b.id).catch(() => null);
+      if (!old || (old.updatedAt || 0) < b.updatedAt) { await dbq(() => DB.put(b)); n++; }
+    }
+    toast(t('importDone', {n}));
+    openHistory();
+  } catch(e) { toast(t('importBad')); }
 }
 
 /* ---- about ---- */
@@ -968,44 +1662,76 @@ function fontListHTML(){
         <span class="tick"></span></button>`;
     }).join('') + `</div>`;
 }
-function openMenu(focusBill){
+function openMenu(){
+  const segOf = (key, opts) => `<div class="seg tight" data-key="${key}">${opts.map(([v, l]) => `<button type="button" data-v="${v}" class="${String(S[key])===String(v)?'on':''}">${esc(l)}</button>`).join('')}</div>`;
+  const vibNote = navigator.vibrate ? '' : `<div class="hint warn">${esc(isIOS ? t('iosVib') : t('noVib'))}</div>`;
   openSheet(`
     <div class="sh-title">${esc(t('setTitle'))}</div>
-    <label>${esc(t('billLabel'))}<input id="mBill" type="text" autocomplete="off" placeholder="${esc(t('billPh'))}" value="${esc(S.bill)}"></label>
+    <div class="stack">
+      <button class="trow" type="button" id="mHist"><span>🕘 ${esc(t('hist'))}</span></button>
+      <button class="trow" type="button" id="mNew"><span>➕ ${esc(t('newBill'))}<small>${esc(t('newBillSub'))}</small></span></button>
+    </div>
     <div class="sec">${esc(t('language'))}</div>
     <div class="seg lang" id="mLang">${LANGS.map(([k,n]) => `<button type="button" data-lg="${k}" class="${S.lang===k?'on':''}">${n}</button>`).join('')}</div>
     ${fontListHTML()}
+
+    <div class="sec">🔊 ${esc(t('soundSec'))}</div>
+    <div class="stack"><button class="trow" type="button" data-t="sound">${esc(t('sound'))}<span class="pill${S.sound?' on':''}"></span></button></div>
+    <div class="lbl">${esc(t('soundStyle'))}</div>
+    ${segOf('soundStyle', [['beep',t('sBeep')],['click',t('sClick')],['pop',t('sPop')],['bell',t('sBell')]])}
+    <div class="lbl">${esc(t('volume'))}</div>
+    <div class="range"><input id="mVol" type="range" min="0" max="100" step="5" value="${S.volume}"><b id="mVolV">${S.volume}%</b></div>
+    <div class="hint">${esc(t('volNote'))}</div>
+
+    <div class="sec">📳 ${esc(t('vibSec'))}</div>
+    <div class="stack"><button class="trow" type="button" data-t="vibrate">${esc(t('vibrate'))}<span class="pill${S.vibrate?' on':''}"></span></button></div>
+    ${vibNote}
+    <div class="lbl">${esc(t('vibLevel'))}</div>
+    ${segOf('vibLevel', [[1,t('vLight')],[2,t('vNormal')],[3,t('vStrong')],[4,t('vMax')]])}
+    <div class="lbl">${esc(t('mile'))}</div>
+    ${segOf('mile', [[0,t('mOff')],[5,'5'],[10,'10'],[20,'20']])}
+    <div class="lbl">${esc(t('tryIt'))}</div>
+    <div class="tests" id="mTest">${[['up','xUp'],['down','xDown'],['mile','xMile'],['hit','xHit'],['over','xOver'],['err','xErr']].map(([k,l]) => `<button type="button" data-k="${k}">${esc(t(l))}</button>`).join('')}</div>
+    <div class="hint">${esc(t('vibLegend'))}</div>
+
+    <div class="sec">${esc(t('dataSec'))}</div>
     <div class="stack">
-      <button class="trow" type="button" data-t="sound">${esc(t('sound'))}<span class="pill${S.sound?' on':''}"></span></button>
-      <button class="trow" type="button" data-t="vibrate">${esc(t('vibrate'))}<span class="pill${S.vibrate?' on':''}"></span></button>
       <button class="trow" type="button" id="mReset">${esc(t('resetAll'))}</button>
-      <button class="trow" type="button" id="mClear" style="color:#ff8d9c">${esc(t('clearAll'))}</button>
       <button class="trow" type="button" id="mAbout">${esc(t('about'))}</button>
     </div>
-    <div class="help">${esc(t('help1'))}<br>${esc(t('help2'))}<br>${esc(t('help3'))}<br>${esc(t('help4'))}</div>
+    <div class="help">${['help1','help2','help3','help4','help5'].map(k => esc(t(k))).join('<br>')}</div>
     <div class="sh-actions" style="grid-template-columns:1fr;margin-top:14px"><button class="btn primary" data-close>${esc(t('done'))}</button></div>`);
-  $('#mBill').oninput = e => { S.bill = e.target.value.trim(); save(); $('#billLine').textContent = S.bill ? `${t('billWord')} ${S.bill}` : t('billPrompt'); };
+  $('#mHist').onclick = openHistory;
+  $('#mNew').onclick = () => { closeSheet(); newBill(); };
   $$('#mLang [data-lg]').forEach(b => b.onclick = () => {
-    S.lang = b.dataset.lg; save(); applyLang(); render(); openMenu(false);
+    S.lang = b.dataset.lg; save(); applyLang(); render(); openMenu();
   });
   $$('.fopt[data-lf]').forEach(b => b.onclick = () => {
-    S.laoFont = b.dataset.lf; save(); applyLang(); openMenu(false);
+    S.laoFont = b.dataset.lf; save(); applyLang(); openMenu();
   });
   $$('[data-t]').forEach(b => b.onclick = () => {
     const k = b.dataset.t; S[k] = !S[k]; save();
     $('.pill', b).classList.toggle('on', S[k]);
     if (S[k]) fb('up');
   });
+  $$('.seg[data-key]').forEach(sg => sg.onclick = e => {
+    const b = e.target.closest('[data-v]'); if (!b) return;
+    const k = sg.dataset.key;
+    S[k] = k === 'soundStyle' ? b.dataset.v : +b.dataset.v; save();
+    $$('button', sg).forEach(x => x.classList.toggle('on', x === b));
+    if (k === 'soundStyle') beep('hit');
+    else if (k === 'vibLevel') vib('hit');
+    else if (S.mile) fb('mile');
+  });
+  $('#mVol').oninput = e => { S.volume = +e.target.value; $('#mVolV').textContent = S.volume + '%'; save(); };
+  $('#mVol').onchange = () => beep('up');
+  $('#mTest').onclick = e => { const b = e.target.closest('[data-k]'); if (b) fb(b.dataset.k); };
   $('#mAbout').onclick = openAbout;
   $('#mReset').onclick = async () => {
     if (!(await ask(t('resetTitle'), t('resetMsg'), t('resetOk')))) return;
-    snap(); S.items.forEach(i => i.count = 0); save(); render(); toast(t('resetDone'), {label:t('undo'), fn:undo});
+    closeSheet();
+    snap(); S.items.forEach(i => i.count = 0); dirty(); render(); toast(t('resetDone'), {label:t('undo'), fn:undo});
   };
-  $('#mClear').onclick = async () => {
-    if (!(await ask(t('clearTitle'), t('clearMsg'), t('clearOk')))) return;
-    snap(); S.items = []; S.activeId = null; S.bill = ''; save(); render(); toast(t('cleared'), {label:t('undo'), fn:undo});
-  };
-  if (focusBill) setTimeout(() => $('#mBill').focus(), 150);
 }
 
 /* ================= list interactions ================= */
@@ -1064,18 +1790,20 @@ function endDrag(){
 }
 list.addEventListener('pointerup', endDrag);
 list.addEventListener('pointercancel', endDrag);
-document.addEventListener('click', e => { if (openId && !e.target.closest('.row')) setOpen(null); });
+document.addEventListener('click', e => { if (openId && !e.target.closest('.row, [data-hap]')) setOpen(null); });
 
 /* ================= bindings ================= */
+$('#btnHist').innerHTML = ICON.hist;
 $('#btnSum').innerHTML = ICON.check;
 $('#btnMenu').innerHTML = ICON.menu;
 $('#addBtn').innerHTML = ICON.plus + '<span id="addLab"></span>';
 $('#undo').innerHTML = ICON.undo + '<span id="undoLab"></span>';
 
 $('#addBtn').onclick = openAdd;
+$('#btnHist').onclick = openHistory;
 $('#btnSum').onclick = openSummary;
-$('#btnMenu').onclick = () => openMenu(false);
-$('#billLine').onclick = () => openMenu(true);
+$('#btnMenu').onclick = openMenu;
+$('#billLine').onclick = openBillInfo;
 $('#undo').onclick = undo;
 $('#chips').addEventListener('click', e => {
   const b = e.target.closest('[data-f]'); if (!b) return;
@@ -1083,7 +1811,7 @@ $('#chips').addEventListener('click', e => {
 });
 $('#steps').addEventListener('click', e => {
   const b = e.target.closest('[data-s]'); if (!b) return;
-  S.step = +b.dataset.s; save(); renderDock();
+  S.step = b.dataset.s === 'p' ? 'p' : +b.dataset.s; save(); renderDock();
 });
 $('#now').onclick = () => {
   const row = $(`.row[data-id="${S.activeId}"]`);
@@ -1098,15 +1826,15 @@ $('#dock').addEventListener('contextmenu', e => e.preventDefault());
 
 function loadDemo(){
   snap();
-  const mk = (name, target) => ({id:uid(), name, count:0, target});
+  const mk = (name, target, unit, pack) => ({id:uid(), name, count:0, target, unit, pack:pack || null});
   const sets = {
-    en:[mk('Drinking water 600ml (pack)',24), mk('Rice 5kg',10), mk('Sugar',12), mk('Cement bag',40)],
-    th:[mk('น้ำดื่ม 600ml (แพ็ค)',24), mk('ข้าวสาร 5kg',10), mk('น้ำตาลทราย',12), mk('ปูนซีเมนต์ ถุง',40)],
-    lo:[mk('ນ້ຳດື່ມ 600ml (ແພັກ)',24), mk('ເຂົ້າສານ 5kg',10), mk('ນ້ຳຕານ',12), mk('ຊີມັງ ຖົງ',40)]
+    en:[mk('Drinking water 600ml',24,'pack'), mk('Rice 5kg',10,'bag'), mk('Soda can',48,'can',24), mk('Cement',40,'bag')],
+    th:[mk('น้ำดื่ม 600ml',24,'แพ็ค'), mk('ข้าวสาร 5kg',10,'ถุง'), mk('น้ำอัดลม กระป๋อง',48,'กระป๋อง',24), mk('ปูนซีเมนต์',40,'ถุง')],
+    lo:[mk('ນ້ຳດື່ມ 600ml',24,'ແພັກ'), mk('ເຂົ້າສານ 5kg',10,'ຖົງ'), mk('ນ້ຳອັດລົມ ກະປ໋ອງ',48,'ກະປ໋ອງ',24), mk('ຊີມັງ',40,'ຖົງ')]
   };
   S.items = sets[S.lang] || sets.en;
-  S.activeId = S.items[0].id; S.bill = 'DEMO-001';
-  save(); render();
+  S.activeId = S.items[0].id; if (!S.bill) S.bill = 'DEMO-001';
+  dirty(); render();
 }
 
 /* dock height -> CSS var (so the list never hides behind the dock) */
@@ -1129,6 +1857,8 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
+save();
+if (!isBlank(curBill())) persistNow();   // make sure the bill in progress is in History too
 applyLang(); render(); setDockH(); probeExtras();
 })();
 </script>
